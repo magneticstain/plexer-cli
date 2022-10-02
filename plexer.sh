@@ -5,9 +5,19 @@
 # DESC: Normalize media files for use with Plex Media Server
 #
 
-INITIAL_MEDIA_DIR="/mnt/volume_nyc1_01/media/Completed/"
+INITIAL_MEDIA_DIR="$1"
+if [ -z "${INITIAL_MEDIA_DIR}" ]
+then
+        echo "ERROR: current directory for media required"
+        exit 1
+elif [ ! -d "${INITIAL_MEDIA_DIR}" ]
+then
+        echo "ERROR: [ ${INITIAL_MEDIA_DIR} ] is not a directory"
+        exit 1
+fi
 
-DST_MEDIA_DIR="$1"
+
+DST_MEDIA_DIR="$2"
 if [ -z "${DST_MEDIA_DIR}" ]
 then
 	echo "ERROR: destination directory for media required"
@@ -25,7 +35,7 @@ normalize_directory() {
 	BASE_DIR=$(echo "${MEDIA_FILE_DIR}" | rev | cut -d'/' -f2- | rev)
 	NEW_MEDIA_FILE_DIR="${BASE_DIR}/${BASE_NAME}"
         
-	mv "${MEDIA_FILE_DIR}" "${NEW_MEDIA_FILE_DIR}"
+#	mv "${MEDIA_FILE_DIR}" "${NEW_MEDIA_FILE_DIR}"
         
 	echo "[ ${MEDIA_FILE_DIR} => ${NEW_MEDIA_FILE_DIR} ]"
 }
@@ -42,12 +52,12 @@ normalize_files() {
 			NEW_MEDIA_FILE="${NEW_MEDIA_FILE_DIR}/${BASE_NAME}.${MEDIA_FILE_EXT}"
 
 			echo "Media file found [ ${MEDIA_FILE} ], renaming..."
-        		mv "${MEDIA_FILE}" "${NEW_MEDIA_FILE}"
+#        		mv "${MEDIA_FILE}" "${NEW_MEDIA_FILE}"
         		echo "[ ${MEDIA_FILE} => ${NEW_MEDIA_FILE} ]"
 		else
 			# delete it
 			echo "Non-media file found [ ${MEDIA_FILE} ], deleting..."
-			rm "${MEDIA_FILE}"
+#			rm "${MEDIA_FILE}"
 		fi
 	done
 }
@@ -55,7 +65,7 @@ normalize_files() {
 move_media() {
 	echo "Moving to target media directory..."
         echo "[ ${NEW_MEDIA_FILE_DIR} => ${DST_MEDIA_DIR} ]"
-	mv "${NEW_MEDIA_FILE_DIR}" "${DST_MEDIA_DIR}"
+#	mv "${NEW_MEDIA_FILE_DIR}" "${DST_MEDIA_DIR}"
 }
 
 ### MAIN
