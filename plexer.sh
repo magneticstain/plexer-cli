@@ -57,36 +57,37 @@ normalize_files() {
 
 	for MEDIA_FILE in $(ls "${MEDIA_FILE_DIR}")
 	do
-        MEDIA_FILE_EXT=$(echo "${MEDIA_FILE}" | rev | cut -d'.' -f1 | rev)
+		echo "FILE: ${MEDIA_FILE}"
 
+		CURRENT_MEDIA_FILE_ABS_PATH="${MEDIA_FILE_DIR}/${MEDIA_FILE}"
+
+        MEDIA_FILE_EXT=$(echo "${MEDIA_FILE}" | rev | cut -d'.' -f1 | rev)
 		if [ "${MEDIA_FILE_EXT}" == "avi" ] || [ "${MEDIA_FILE_EXT}" == "mkv" ] || [ "${MEDIA_FILE_EXT}" == "mp4" ]
 		then
+			echo "Media file found - [ ${MEDIA_FILE} ] - renaming..."
+
 			# normalize file
-			FULL_MEDIA_FILENAME="${MEDIA_FILE_DIR}/${MEDIA_FILE}"
+			NEW_MEDIA_FILE_ABS_PATH="${MEDIA_FILE_DIR}/${BASE_NAME}.${MEDIA_FILE_EXT}"
+			mv "${CURRENT_MEDIA_FILE_ABS_PATH}" "${NEW_MEDIA_FILE_ABS_PATH}"
 
-			echo "Media file found [ ${FULL_MEDIA_FILENAME} ], renaming..."
-
-			NEW_MEDIA_FILE="${MEDIA_FILE_DIR}/${BASE_NAME}.${MEDIA_FILE_EXT}"
-			mv "${FULL_MEDIA_FILENAME}" "${NEW_MEDIA_FILE}"
-
-        	echo "[ ${FULL_MEDIA_FILENAME} => ${NEW_MEDIA_FILE} ]"
+        	echo "[INFO] normalization complete - [ ${CURRENT_MEDIA_FILE_ABS_PATH} => ${NEW_MEDIA_FILE_ABS_PATH} ]"
 		else
 			# delete it
-			echo "Non-media file found [ ${FULL_MEDIA_FILENAME} ], deleting..."
-			rm "${FULL_MEDIA_FILENAME}"
+			echo "[INFO] non-media file found - [ ${CURRENT_MEDIA_FILE_ABS_PATH} ] - deleting..."
+			rm "${CURRENT_MEDIA_FILE_ABS_PATH}"
 		fi
 	done
 }
 
 move_media() {
 	echo "Moving to target media directory..."
-    echo "[ ${NEW_MEDIA_FILE_DIR} => ${DST_MEDIA_DIR} ]"
-	mv "${NEW_MEDIA_FILE_DIR}" "${DST_MEDIA_DIR}"
+    echo "[ ${MEDIA_FILE_DIR} => ${DST_MEDIA_DIR} ]"
+	mv "${MEDIA_FILE_DIR}" "${DST_MEDIA_DIR}"
 }
 
 fix_media_file_perms() {
     chown -R josh:media "${DST_MEDIA_DIR}"
-    chmod -R 775 "${DST_MEDIA_DIR}"
+    chmod -R 755 "${DST_MEDIA_DIR}"
 }
 
 
