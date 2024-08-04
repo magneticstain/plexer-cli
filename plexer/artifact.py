@@ -10,10 +10,10 @@ class Artifact:
     """
 
     name = ""
-    path = ""
-    file_type = ""
+    absolute_path = ""
+    mime_type = ""
 
-    def __init__(self, name: str, path: str, file_type: str) -> None:
+    def __init__(self, name: str, path: str, mime_type: str) -> None:
         self.name = name
-        self.path = path
-        self.file_type = file_type
+        self.absolute_path = path
+        self.mime_type = mime_type

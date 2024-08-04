@@ -27,17 +27,20 @@ from plexer.file_manager import FileManager
 def main(cli_args):
     """ Main entry point of the app """
 
-    logzero.json(enable=True)
+    # logzero.json(enable=True)
     logzero.loglevel(logzero.DEBUG)
     logzero.logfile(None)
 
     logger.info("starting Plexer")
     logger.info("options: %s", cli_args)
 
-    logger.info("reading source directory")
     fm = FileManager()
+
+    logger.info("reading source directory")
     artifacts = fm.get_artifacts(cli_args.source_dir)
-    logger.debug("file artifacts found: %s", artifacts)
+
+    logger.info("processing %d artifact(s)", len(artifacts))
+    fm.process_directory(dir_artifacts=artifacts)
 
 
 if __name__ == "__main__":
