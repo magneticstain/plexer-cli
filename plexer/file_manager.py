@@ -6,6 +6,7 @@ Module: File Manager - code for file-related ops
 
 from os import scandir
 from magic import from_file
+from logzero import logger
 
 from .artifact import Artifact
 
@@ -33,5 +34,5 @@ class FileManager:
                         file_type=from_file(artifact_entry.path, mime=True)
                     )
                 )
-        
+
         return artifacts

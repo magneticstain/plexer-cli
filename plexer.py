@@ -37,8 +37,7 @@ def main(cli_args):
     logger.info("reading source directory")
     fm = FileManager()
     artifacts = fm.get_artifacts(cli_args.source_dir)
-
-    print(artifacts)
+    logger.debug("file artifacts found: %s", artifacts)
 
 
 if __name__ == "__main__":
