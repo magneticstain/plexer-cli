@@ -4,7 +4,8 @@ Plexer - Normalize media files for use with Plex Media Server
 Module: File Manager - code for file-related ops
 """
 
-from os import scandir
+import os
+from pathlib import Path
 from magic import from_file
 from logzero import logger
 
@@ -16,40 +17,60 @@ class FileManager:
     Class used for any file-related ops
     """
 
-    def __init__(self) -> None:
-        pass
+    src_dir = ""
+    dst_dir = ""
 
-    def get_artifacts(self, tgt_dir: str) -> list:
+    def __init__(self, src_dir, dst_dir) -> None:
+        self.src_dir = src_dir
+        self.dst_dir = dst_dir
+
+    def get_artifacts(self, tgt_dir="") -> list:
         """
         Gather the names of all files and directories in a given directory and return as list
+        
+        
+        Target directory is the source directory by default.
         """
 
         artifacts = []
+        tgt_dir = tgt_dir if tgt_dir else self.src_dir
 
-        with scandir(tgt_dir) as sd_iter:
+        with os.scandir(tgt_dir) as sd_iter:
             for artifact_entry in sd_iter:
-                new_artifact = Artifact(
-                    name=artifact_entry.name,
-                    path=artifact_entry.path,
-                    mime_type=from_file(artifact_entry.path, mime=True)
-                )
+                try:
+                    artifact_mime_type = from_file(artifact_entry.path, mime=True)
+                except IsADirectoryError:
+                    artifact_mime_type = "directory"
 
-                logger.debug(
-                    "new file artifact found: [ FILE: %s | PATH: %s | FILE TYPE: %s ]",
-                    new_artifact.name,
-                    new_artifact.absolute_path,
-                    new_artifact.mime_type
+                artifacts.append(
+                    Artifact(
+                        name=artifact_entry.name,
+                        path=artifact_entry.path,
+                        mime_type=artifact_mime_type
+                    )
                 )
-
-                # metadata file must be prepended to ensure it's read in first during processing
-                if artifact_entry.name == ".plexer":
-                    artifacts = [new_artifact] + artifacts
-                else:
-                    artifacts.append(new_artifact)
 
         return artifacts
 
-    def process_directory(self, dir_artifacts: list) -> bool:
+    def prep_artifacts(self, artifacts: list) -> list:
+        """
+        Perform any processing needed to prepare the artifact data for further processing
+
+        Right now, this includes:
+            * Properly ordering artifacts such that the metadata file is first
+        """
+
+        for idx, artifact in enumerate(artifacts):
+            if artifact.name == ".plexer":
+                # float it to the top of the artifact set
+                artifacts.pop(idx)
+                artifacts.insert(0, artifact)
+
+                break
+
+        return artifacts
+
+    def process_directory(self, dir_artifacts: list) -> None:
         """
         Traverse the given directory artifacts, rename the 
           video files accordingly, and delete everything else
@@ -61,20 +82,57 @@ class FileManager:
 
         video_metadata = Metadata()
 
+        logger.debug("prepping artifacts for processing")
+        dir_artifacts = self.prep_artifacts(dir_artifacts)
+
         for artifact in dir_artifacts:
+            logger.info(
+                "processing artifact: [ FILE: %s | PATH: %s | FILE TYPE: %s ]",
+                artifact.name,
+                artifact.absolute_path,
+                artifact.mime_type
+            )
+
             if artifact.mime_type == "directory":
-                # process each directory recursively
-                logger.debug("found directory inside directory; processing new directory")
+                logger.info("subdirectory found, processing")
+
+                # start recursive subprocessing
                 new_dir_artifacts = self.get_artifacts(tgt_dir=artifact.absolute_path)
-                self.process_directory(dir_artifacts=new_dir_artifacts)
+                self.process_directory(
+                    dir_artifacts=new_dir_artifacts
+                )
+
+                # after subprocessing, move top-level dir to dest dir
+                src_file_name = f"{self.src_dir}/{artifact.name}"
+                dst_file_name = f"{self.dst_dir}/{artifact.name}"
+
+                logger.info(
+                    "moving parent directory from %s to %s", src_file_name, dst_file_name
+                )
+
+                os.rename(src_file_name, dst_file_name)
             elif artifact.name == ".plexer":
                 # read in video metadata
+                logger.info("metadata file found, importing")
+
                 video_metadata.import_metadata_from_file(file_path=artifact.absolute_path)
             elif artifact.mime_type.startswith("video/"):
-                # rename
-                pass
+                # move + rename
+                logger.info("video file found, renaming")
+
+                file_path = Path(artifact.absolute_path)
+                file_dir = file_path.parent
+                file_ext = file_path.suffix
+
+                src_file = artifact.absolute_path
+                dst_file = (f"{file_dir}/{video_metadata.name}"
+                            f" ({video_metadata.release_year}){file_ext}")
+
+                logger.debug("moving %s to %s", src_file, dst_file)
+
+                os.rename(src_file, dst_file)
             else:
                 # delete the file
-                pass
+                logger.info("unnecessary file found, deleting")
 
-        return True
+                os.remove(artifact.absolute_path)

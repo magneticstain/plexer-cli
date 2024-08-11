@@ -15,15 +15,6 @@ from logzero import logger
 
 from plexer.file_manager import FileManager
 
-# traverse all **directories** in src dir
-# for each dir:
-#   prompt user for naming slug
-#   traverse both dirs and files
-#   if file is media file, rename to <slug>.<ext>
-#   else rm file
-#   move dir to dst dir and rename to <slug>
-
-
 def main(cli_args):
     """ Main entry point of the app """
 
@@ -32,15 +23,17 @@ def main(cli_args):
     logzero.logfile(None)
 
     logger.info("starting Plexer")
-    logger.info("options: %s", cli_args)
+    logger.debug("options: %s", cli_args)
 
-    fm = FileManager()
+    fm = FileManager(src_dir=cli_args.source_dir, dst_dir=cli_args.destination_dir)
 
     logger.info("reading source directory")
-    artifacts = fm.get_artifacts(cli_args.source_dir)
+    artifacts = fm.get_artifacts()
+    logger.info("%d artifact(s) found in source directory", len(artifacts))
 
-    logger.info("processing %d artifact(s)", len(artifacts))
+    logger.info("processing artifacts")
     fm.process_directory(dir_artifacts=artifacts)
+    logger.info("artifact processing completed successfully ")
 
 
 if __name__ == "__main__":
