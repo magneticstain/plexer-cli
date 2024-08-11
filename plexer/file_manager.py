@@ -101,16 +101,6 @@ class FileManager:
                 self.process_directory(
                     dir_artifacts=new_dir_artifacts
                 )
-
-                # after subprocessing, move top-level dir to dest dir
-                src_file_name = f"{self.src_dir}/{artifact.name}"
-                dst_file_name = f"{self.dst_dir}/{artifact.name}"
-
-                logger.info(
-                    "moving parent directory from %s to %s", src_file_name, dst_file_name
-                )
-
-                os.rename(src_file_name, dst_file_name)
             elif artifact.name == ".plexer":
                 # read in video metadata
                 logger.info("metadata file found, importing")
