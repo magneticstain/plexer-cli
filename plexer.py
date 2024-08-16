@@ -33,7 +33,7 @@ def main(cli_args):
 
     logger.info("processing artifacts")
     fm.process_directory(dir_artifacts=artifacts)
-    logger.info("artifact processing completed successfully ")
+    logger.info("artifact processing completed successfully")
 
 
 if __name__ == "__main__":
