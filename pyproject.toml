@@ -30,9 +30,9 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/Josh Carlson/plexer#readme"
-Issues = "https://github.com/Josh Carlson/plexer/issues"
-Source = "https://github.com/Josh Carlson/plexer"
+Documentation = "https://github.com/magneticstain/plexer#readme"
+Issues = "https://github.com/magneticstain/plexer/issues"
+Source = "https://github.com/magneticstain/plexer"
 
 [tool.hatch.version]
 path = "plexer.py"
@@ -49,21 +49,18 @@ extra-dependencies = [
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/plexer tests}"
 
-[tool.coverage.run]
-source_pkgs = ["plexer", "tests"]
-branch = true
-parallel = true
-omit = [
-  "src/plexer/__about__.py",
-]
+# [tool.coverage.run]
+# source_pkgs = ["plexer", "tests"]
+# branch = true
+# parallel = true
 
-[tool.coverage.paths]
-plexer = ["src/plexer", "*/plexer/src/plexer"]
-tests = ["tests", "*/plexer/tests"]
+# [tool.coverage.paths]
+# plexer = ["src/plexer", "*/plexer/src/plexer"]
+# tests = ["tests", "*/plexer/tests"]
 
-[tool.coverage.report]
-exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:",
-]
+# [tool.coverage.report]
+# exclude_lines = [
+#   "no cov",
+#   "if __name__ == .__main__.:",
+#   "if TYPE_CHECKING:",
+# ]
