@@ -27,8 +27,11 @@ def main(cli_args):
 
     fm = FileManager(src_dir=cli_args.source_dir, dst_dir=cli_args.destination_dir)
 
-    logger.info("reading source directory")
-    artifacts = fm.get_artifacts()
+    # get and prep artifacts for processing
+    logger.debug("prepping artifacts for processing")
+    artifacts = fm.prep_artifacts(
+        artifacts=fm.get_artifacts()
+    )
     logger.info("%d artifact(s) found in source directory", len(artifacts))
 
     logger.info("processing artifacts")

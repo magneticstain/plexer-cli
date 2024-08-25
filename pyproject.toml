@@ -26,7 +26,8 @@ classifiers = [
 ]
 dependencies = [
   "logzero",
-  "python-magic"
+  "python-magic",
+  "moviepy"
 ]
 
 [project.urls]
@@ -42,12 +43,12 @@ dependencies = [
   "pytest"
 ]
 
-[tool.hatch.envs.types]
-extra-dependencies = [
-  "mypy>=1.0.0",
-]
-[tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/plexer tests}"
+# [tool.hatch.envs.types]
+# extra-dependencies = [
+#   "mypy>=1.0.0",
+# ]
+# [tool.hatch.envs.types.scripts]
+# check = "mypy --install-types --non-interactive {args:src/plexer tests}"
 
 # [tool.coverage.run]
 # source_pkgs = ["plexer", "tests"]
