@@ -83,6 +83,8 @@ class FileManager:
 
         video_metadata = Metadata()
 
+        logger.debug("starting directory artifact processing")
+
         for artifact in dir_artifacts:
             logger.info(
                 "processing artifact: [ FILE: %s | PATH: %s | FILE TYPE: %s ]",

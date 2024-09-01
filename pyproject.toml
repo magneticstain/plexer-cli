@@ -9,7 +9,7 @@ description = 'Normalize media files for use with Plex Media Server'
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
-keywords = []
+keywords = ["plex", "media", "catagorization", "organization", "formatting"]
 authors = [
   { name = "Josh Carlson", email = "837837+magneticstain@users.noreply.github.com" },
 ]
@@ -26,8 +26,7 @@ classifiers = [
 ]
 dependencies = [
   "logzero",
-  "python-magic",
-  "moviepy"
+  "python-magic"
 ]
 
 [project.urls]
@@ -40,7 +39,8 @@ path = "plexer.py"
 
 [tool.hatch.envs.dev]
 dependencies = [
-  "pytest"
+  "pytest",
+  "moviepy"
 ]
 
 # [tool.hatch.envs.types]
