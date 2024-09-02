@@ -10,6 +10,7 @@ from magic import from_file
 from logzero import logger
 
 from .artifact import Artifact
+from .const import METADATA_FILE_NAME
 from .metadata import Metadata
 
 class FileManager:
@@ -61,7 +62,7 @@ class FileManager:
         """
 
         for idx, artifact in enumerate(artifacts):
-            if artifact.name == ".plexer":
+            if artifact.name == METADATA_FILE_NAME:
                 # float it to the top of the artifact set
                 artifacts.pop(idx)
                 artifacts.insert(0, artifact)
@@ -82,8 +83,7 @@ class FileManager:
 
         video_metadata = Metadata()
 
-        logger.debug("prepping artifacts for processing")
-        dir_artifacts = self.prep_artifacts(dir_artifacts)
+        logger.debug("starting directory artifact processing")
 
         for artifact in dir_artifacts:
             logger.info(
@@ -101,7 +101,7 @@ class FileManager:
                 self.process_directory(
                     dir_artifacts=new_dir_artifacts
                 )
-            elif artifact.name == ".plexer":
+            elif artifact.name == METADATA_FILE_NAME:
                 # read in video metadata
                 logger.info("metadata file found, importing")
 
