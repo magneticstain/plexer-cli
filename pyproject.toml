@@ -42,26 +42,3 @@ dependencies = [
   "pytest",
   "moviepy"
 ]
-
-# [tool.hatch.envs.types]
-# extra-dependencies = [
-#   "mypy>=1.0.0",
-# ]
-# [tool.hatch.envs.types.scripts]
-# check = "mypy --install-types --non-interactive {args:src/plexer tests}"
-
-# [tool.coverage.run]
-# source_pkgs = ["plexer", "tests"]
-# branch = true
-# parallel = true
-
-# [tool.coverage.paths]
-# plexer = ["src/plexer", "*/plexer/src/plexer"]
-# tests = ["tests", "*/plexer/tests"]
-
-# [tool.coverage.report]
-# exclude_lines = [
-#   "no cov",
-#   "if __name__ == .__main__.:",
-#   "if TYPE_CHECKING:",
-# ]

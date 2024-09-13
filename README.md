@@ -47,3 +47,18 @@ options:
   -s SOURCE_DIR, --source-dir SOURCE_DIR
   -d DESTINATION_DIR, --destination-dir DESTINATION_DIR
 ```
+
+## Development
+
+### Software Stack
+
+For developing with Plexer, there are several tools that are in use:
+
+1. Build Backend:
+   1. [Hatch](https://hatch.pypa.io/1.12/)
+1. Analysis Tools:
+   1. [Pylint](https://pylint.readthedocs.io/en/stable/index.html)
+   1. [Codacy](https://app.codacy.com/gh/magneticstain/plexer/dashboard)
+1. Testing:
+   1. [Pytest](https://docs.pytest.org/en/latest/)
+   1. [Tox](https://tox.wiki/en/stable/)
