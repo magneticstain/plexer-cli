@@ -13,6 +13,7 @@ from .artifact import Artifact
 from .const import METADATA_FILE_NAME
 from .metadata import Metadata
 
+
 class FileManager:
     """
     Class used for any file-related ops
@@ -28,8 +29,8 @@ class FileManager:
     def get_artifacts(self, tgt_dir="") -> list:
         """
         Gather the names of all files and directories in a given directory and return as list
-        
-        
+
+
         Target directory is the source directory by default.
         """
 
@@ -47,7 +48,7 @@ class FileManager:
                     Artifact(
                         name=artifact_entry.name,
                         path=artifact_entry.path,
-                        mime_type=artifact_mime_type
+                        mime_type=artifact_mime_type,
                     )
                 )
 
@@ -73,10 +74,10 @@ class FileManager:
 
     def process_directory(self, dir_artifacts: list) -> None:
         """
-        Traverse the given directory artifacts, rename the 
+        Traverse the given directory artifacts, rename the
           video files accordingly, and delete everything else
-        
-        NOTE: the artifact for the metadata file MUST come first 
+
+        NOTE: the artifact for the metadata file MUST come first
           in the artifact list. Failing to do so may lead to instability
           during artifact processing.
         """
@@ -90,7 +91,7 @@ class FileManager:
                 "processing artifact: [ FILE: %s | PATH: %s | FILE TYPE: %s ]",
                 artifact.name,
                 artifact.absolute_path,
-                artifact.mime_type
+                artifact.mime_type,
             )
 
             if artifact.mime_type == "directory":
@@ -98,14 +99,14 @@ class FileManager:
 
                 # start recursive subprocessing
                 new_dir_artifacts = self.get_artifacts(tgt_dir=artifact.absolute_path)
-                self.process_directory(
-                    dir_artifacts=new_dir_artifacts
-                )
+                self.process_directory(dir_artifacts=new_dir_artifacts)
             elif artifact.name == METADATA_FILE_NAME:
                 # read in video metadata
                 logger.info("metadata file found, importing")
 
-                video_metadata.import_metadata_from_file(file_path=artifact.absolute_path)
+                video_metadata.import_metadata_from_file(
+                    file_path=artifact.absolute_path
+                )
             elif artifact.mime_type.startswith("video/"):
                 # move + rename
                 logger.info("video file found, renaming")
@@ -115,8 +116,10 @@ class FileManager:
                 file_ext = file_path.suffix
 
                 src_file = artifact.absolute_path
-                dst_file = (f"{file_dir}/{video_metadata.name}"
-                            f" ({video_metadata.release_year}){file_ext}")
+                dst_file = (
+                    f"{file_dir}/{video_metadata.name}"
+                    f" ({video_metadata.release_year}){file_ext}"
+                )
 
                 logger.debug("moving %s to %s", src_file, dst_file)
 

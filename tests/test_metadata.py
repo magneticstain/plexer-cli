@@ -7,6 +7,7 @@ import pytest
 from plexer.const import METADATA_FILE_NAME
 from plexer.metadata import Metadata
 
+
 class TestMetadata:
     """
     Unit Tests - Metadata
@@ -36,7 +37,6 @@ class TestMetadata:
     def metadata(self) -> Metadata:
         """Generate a Metadata() obj for tests"""
         return Metadata()
-
 
     def test_import_metadata_from_file(self, metadata, metadata_file, sample_metadata):
         """Test metadata file import with valid data"""
