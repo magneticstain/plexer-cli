@@ -39,6 +39,7 @@ path = "plexer.py"
 
 [tool.hatch.envs.dev]
 dependencies = [
+  "ruff",
   "pytest",
   "moviepy"
 ]

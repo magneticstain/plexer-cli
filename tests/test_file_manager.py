@@ -10,6 +10,7 @@ import moviepy.editor
 from plexer.const import METADATA_FILE_NAME
 from plexer.file_manager import FileManager
 
+
 class TestFileManager:
     """
     Unit Tests - FileManager
@@ -18,13 +19,11 @@ class TestFileManager:
     @pytest.fixture
     def video_data(self):
         """Create in-mem video data
-        
+
         Currently generates a 100 x 100, 3s black video clip"""
 
         vid_clip = moviepy.editor.ColorClip(
-            size=(100, 100),
-            color=(0, 0, 0),
-            duration=3
+            size=(100, 100), color=(0, 0, 0), duration=3
         )
 
         return vid_clip

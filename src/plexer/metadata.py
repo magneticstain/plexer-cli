@@ -7,6 +7,7 @@ Module: Metadata - code for analyzing and managing video metadata
 import json
 from logzero import logger
 
+
 class Metadata:
     """
     Code used for managing the metadata of a given video file, especially names
@@ -35,4 +36,6 @@ class Metadata:
             self.name = imported_metadata["name"]
             self.release_year = imported_metadata["release_year"]
         except KeyError as e:
-            logger.error("data missing in metadata file; \"%s\" field was not found", e.args[0])
+            logger.error(
+                'data missing in metadata file; "%s" field was not found', e.args[0]
+            )
