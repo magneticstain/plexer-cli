@@ -7,7 +7,7 @@ name = "plexer"
 dynamic = ["version"]
 description = "Normalize media files for use with Plex Media Server"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = "MIT"
 keywords = ["plex", "media", "catagorization", "organization", "formatting"]
 authors = [
@@ -16,17 +16,10 @@ authors = [
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
-]
-dependencies = [
-  "logzero",
-  "python-magic"
+  "Programming Language :: Python :: 3.12"
 ]
 
 [project.urls]
@@ -39,6 +32,7 @@ path = "plexer.py"
 
 [tool.hatch.envs.dev]
 dependencies = [
+  "pipenv",
   "ruff",
   "pytest",
   "moviepy"
