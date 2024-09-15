@@ -21,6 +21,10 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12"
 ]
+dependencies = [
+  "logzero",
+  "python-magic"
+]
 
 [project.urls]
 Documentation = "https://github.com/magneticstain/plexer#readme"
@@ -32,7 +36,6 @@ path = "plexer.py"
 
 [tool.hatch.envs.dev]
 dependencies = [
-  "pipenv",
   "ruff",
   "pytest",
   "moviepy"
