@@ -59,7 +59,7 @@ options:
 
 For developing with Plexer, there are several tools that are in use:
 
-1. Build Backend:
+1. Build Backend, Packaging, and Dependency Management:
    1. [Hatch](https://hatch.pypa.io/1.12/)
 1. Analysis Tools:
    1. [Ruff](https://docs.astral.sh/ruff/)
