@@ -12,7 +12,7 @@ The table below outlines which versions currently have support for security fixe
 
 To report a vulnerability in Plexer, please use the `Report a vulnerability` button in the `Security` tab of this repo. You should expect to hear a response within **5 business days**.
 
-SLOs
+### SLOs
 Maintainers attempt to provide a remediation to a security vulnerability within the following SLO guidelines:
 
 | Severity | Time to Remediation (TTR) |
