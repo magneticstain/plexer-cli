@@ -5,6 +5,7 @@ Normalize media files for use with Plex Media Server.
 ![GitHub License](https://img.shields.io/github/license/magneticstain/plexer)
 ![Supported Python Versions](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fmagneticstain%2Fplexer%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/magneticstain/plexer/badge)](https://scorecard.dev/viewer/?uri=github.com/magneticstain/plexer)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/38b2a65ed9ac4c85afc98e259d73474f)](https://app.codacy.com/gh/magneticstain/plexer/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Run Full Suite of Checks and Tests](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml)
 
