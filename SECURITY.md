@@ -10,7 +10,7 @@ The table below outlines which versions currently have support for security fixe
 
 ## Reporting a Vulnerability
 
-To report a vulnerability in Plexer, please use the `Report a vulnerability` button in the `Security` tab of this repo. You should expect to hear a response within **5 business days**.
+To report a vulnerability in Plexer, please use the `Report a vulnerability` button in the `Security` tab of this repo (or [click here](https://github.com/magneticstain/plexer/security/advisories/new)). You should expect to hear a response within **5 business days**.
 
 ### SLOs
 
