@@ -14,12 +14,26 @@ authors = [
   { name = "Josh Carlson", email = "837837+magneticstain@users.noreply.github.com" },
 ]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+
+  "Intended Audience :: System Administrators",
+  "Topic :: Utilities",
+
+  "Development Status :: 2 - Pre-Alpha",
+
+  "Operating System :: Unix",
+
+  "Environment :: Console",
+
   "Programming Language :: Python",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12"
+  "Programming Language :: Python :: 3.12",
+
+  "Framework :: Hatch",
+  "Framework :: Pytest",
+  "Framework :: tox"
 ]
 dependencies = [
   "logzero~=1.7.0",
@@ -27,6 +41,7 @@ dependencies = [
 ]
 
 [project.urls]
+Repository = "https://github.com/magneticstain/plexer.git"
 Documentation = "https://github.com/magneticstain/plexer#readme"
 Issues = "https://github.com/magneticstain/plexer/issues"
 Source = "https://github.com/magneticstain/plexer"
