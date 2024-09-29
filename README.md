@@ -27,11 +27,11 @@ Currently, Plexer only supports organizing movies and other individual video fil
 
 ### Roadmap
 
-- [ ] Support for TV Shows (#28)
-- [ ] Docker implementations (#29)
-- [ ] MacOS support (#30)
-- [ ] Windows support (#31)
-- [ ] Metadata inference using file/directory info (i.e. analyze the video files to "guess" what the name, year, etc is) (#32)
+- [ ] Support for TV Shows ([#28](https://github.com/magneticstain/plexer/issues/28))
+- [ ] Docker implementations ([#29](https://github.com/magneticstain/plexer/issues/29))
+- [ ] MacOS support ([#30](https://github.com/magneticstain/plexer/issues/30))
+- [ ] Windows support ([#31](https://github.com/magneticstain/plexer/issues/31))
+- [ ] Metadata inference using file/directory info (i.e. analyze the video files to "guess" what the name, year, etc is) ([#32](https://github.com/magneticstain/plexer/issues/32))
 
 ## Install
 
