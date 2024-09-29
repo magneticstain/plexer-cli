@@ -1,8 +1,9 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: ''
+title: '[FEATURE] '
 labels: enhancement
+projects: "magneticstain/5"
 assignees: magneticstain
 
 ---
