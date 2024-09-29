@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "plexer"
+name = "plexer-cli"
 dynamic = ["version"]
 description = "Normalize media files for use with Plex Media Server"
 readme = "README.md"
