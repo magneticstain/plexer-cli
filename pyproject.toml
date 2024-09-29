@@ -55,3 +55,6 @@ dependencies = [
   "pytest~=8.3.3",
   "moviepy~=1.0.3"
 ]
+
+[tool.hatch.build.targets.wheel]
+  packages = ["src/plexer"]
