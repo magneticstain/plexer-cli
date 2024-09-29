@@ -75,6 +75,10 @@ options:
   -d DESTINATION_DIR, --destination-dir DESTINATION_DIR
 ```
 
+## Support & Feedback
+
+If you run into issues while using Plexer, think you know a way to make it better, or just need help using it, create a new issue within this project and they will triaged when possible.
+
 ## Development
 
 ### Software Stack
