@@ -1,6 +1,7 @@
 # Plexer
 
-![GitHub Release](https://img.shields.io/github/v/release/magneticstain/plexer?include_prereleases)
+<!-- reenable once issue #27 is complete -->
+<!-- ![GitHub Release](https://img.shields.io/github/v/release/magneticstain/plexer?include_prereleases) -->
 ![PyPI - Version](https://img.shields.io/pypi/v/plexer-cli)
 
 ![GitHub License](https://img.shields.io/github/license/magneticstain/plexer)
