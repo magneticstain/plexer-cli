@@ -1,35 +1,51 @@
 # Plexer
 
-Normalize media files for use with Plex Media Server.
+![GitHub Release](https://img.shields.io/github/v/release/magneticstain/plexer?include_prereleases)
+![PyPI - Version](https://img.shields.io/pypi/v/plexer-cli)
 
 ![GitHub License](https://img.shields.io/github/license/magneticstain/plexer)
 ![Supported Python Versions](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fmagneticstain%2Fplexer%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)
 
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/magneticstain/plexer/badge)](https://scorecard.dev/viewer/?uri=github.com/magneticstain/plexer)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/38b2a65ed9ac4c85afc98e259d73474f)](https://app.codacy.com/gh/magneticstain/plexer/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Run Full Suite of Checks and Tests](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml)
-
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/magneticstain/plexer)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/magneticstain/plexer/total)
 
-[![Hatch project](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg)](https://github.com/pypa/hatch)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/magneticstain/plexer/badge)](https://scorecard.dev/viewer/?uri=github.com/magneticstain/plexer)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/38b2a65ed9ac4c85afc98e259d73474f)](https://app.codacy.com/gh/magneticstain/plexer/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
+[![Run Full Suite of Checks and Tests](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml)
+[![Release](https://github.com/magneticstain/plexer/actions/workflows/release.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/release.yml)
+
+## Summary
+
+A CLI tool made to make organizing your media for [Plex Media Server](https://www.plex.tv/) easy. Normalize names of media files and directories to match [the hierarchial requirements that Plex requires](https://support.plex.tv/articles/naming-and-organizing-your-movie-media-files/).
+
+## Features
+
+### Support
+
+Currently, Plexer only supports organizing movies and other individual video files.
+
+### Roadmap
+
+- [ ] Support for TV Shows
+- [ ] Docker implementations
+- [ ] MacOS support
+- [ ] Windows support
+- [ ] Metadata inference using file/directory info (i.e. analyze the video files to "guess" what the name, year, etc is)
+
+## Install
+
+To install plexer, us pip/[pipx](https://github.com/pypa/pipx)/[pipenv](https://pipenv.pypa.io/en/latest/)/your favorite build front-end to install the `plexer-cli` package.
+
+```bash
+pip install plexer-cli
+```
 
 ## Requirements
 
-### Software Dependencies
-
-Start by creating a virtual environment and installing the required packages. Typically that looks something like:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
 ### Media Metadata
 
-The biggest requirement before running plexer is to ensure that you've created a `.plexer` file in each of your target directories.
+The most important requirement before running plexer is to ensure that you've created a `.plexer` file in each of your target directories.
 
 This is a JSON-formatted file that includes the movie metadata required by Plexer to perform its jobs.
 
@@ -61,6 +77,9 @@ options:
 ## Development
 
 ### Software Stack
+
+[![Hatch project](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg)](https://github.com/pypa/hatch)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 For developing with Plexer, there are several tools that are in use:
 
