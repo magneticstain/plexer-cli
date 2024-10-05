@@ -1,22 +1,26 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: '[BUG] '
+about: Report a bug that you've found in the application
+title: ''
 labels: bug
 projects: "magneticstain/5"
 assignees: magneticstain
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Description
 
-**To Reproduce**
+A clear and concise description of what the bug is, what component it's in, etc.
+
+## Steps To Reproduce
+
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Expected behavior
+
+A clear and concise description of what was expected to happen.
