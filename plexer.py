@@ -4,7 +4,7 @@ Plexer - Normalize media files for use with Plex Media Server
 """
 
 __author__ = "magneticstain"
-__version__ = "0.0.1-2"
+__version__ = "0.0.1-4"
 __license__ = "MIT"
 
 import argparse
