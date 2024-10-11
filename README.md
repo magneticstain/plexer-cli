@@ -2,7 +2,7 @@
 
 <!-- reenable once issue #27 is complete -->
 <!-- ![GitHub Release](https://img.shields.io/github/v/release/magneticstain/plexer?include_prereleases) -->
-![PyPI - Version](https://img.shields.io/pypi/v/plexer-cli)
+![PyPI - Version](https://img.shields.io/pypi/v/plexer_cli)
 
 ![GitHub License](https://img.shields.io/github/license/magneticstain/plexer)
 ![Supported Python Versions](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fmagneticstain%2Fplexer%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)
@@ -36,10 +36,10 @@ Currently, Plexer only supports organizing movies and other individual video fil
 
 ## Install
 
-To install plexer, us pip/[pipx](https://github.com/pypa/pipx)/[pipenv](https://pipenv.pypa.io/en/latest/)/your favorite build front-end to install the `plexer-cli` package.
+To install plexer, us pip/[pipx](https://github.com/pypa/pipx)/[pipenv](https://pipenv.pypa.io/en/latest/)/your favorite build front-end to install the `plexer_cli` package.
 
 ```bash
-pip install plexer-cli
+pip install plexer_cli
 ```
 
 ## Requirements

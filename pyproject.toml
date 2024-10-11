@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "plexer-cli"
+name = "plexer_cli"
 dynamic = ["version"]
 description = "Normalize media files for use with Plex Media Server"
 readme = "README.md"
@@ -46,11 +46,11 @@ Documentation = "https://github.com/magneticstain/plexer#readme"
 Issues = "https://github.com/magneticstain/plexer/issues"
 Source = "https://github.com/magneticstain/plexer"
 
-[project.scripts]
-plexer = "plexer-cli:main"
+# [project.scripts]
+# plexer = "plexer_cli:main"
 
 [tool.hatch.version]
-path = "plexer.py"
+path = "plexer_cli.py"
 
 [tool.hatch.envs.dev]
 dependencies = [

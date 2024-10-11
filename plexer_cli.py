@@ -13,7 +13,7 @@ from logzero import logger
 # yes, docs suggest importing it twice:
 # https://logzero.readthedocs.io/en/latest/#advanced-usage-examples
 
-from plexer.file_manager import FileManager
+from plexer_cli.file_manager import FileManager
 
 
 def main(cli_args):
