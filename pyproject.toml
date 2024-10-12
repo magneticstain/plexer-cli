@@ -50,7 +50,7 @@ Source = "https://github.com/magneticstain/plexer"
 # plexer = "plexer_cli:main"
 
 [tool.hatch.version]
-path = "plexer_cli.py"
+path = "plexer.py"
 
 [tool.hatch.envs.dev]
 dependencies = [
