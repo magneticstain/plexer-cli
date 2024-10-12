@@ -2,8 +2,7 @@
 
 <!-- reenable once issue #27 is complete -->
 <!-- ![GitHub Release](https://img.shields.io/github/v/release/magneticstain/plexer?include_prereleases) -->
-<!-- markdownlint-disable-next-line MD033 -->
-[<img src="https://img.shields.io/pypi/v/plexer_cli" alt="Visit package page on PyPI">](https://pypi.org/project/plexer-cli/)
+[![PyPI - Version](https://img.shields.io/pypi/v/plexer_cli)](https://pypi.org/project/plexer-cli/)
 
 ![GitHub License](https://img.shields.io/github/license/magneticstain/plexer)
 ![Supported Python Versions](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fmagneticstain%2Fplexer%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)
