@@ -7,8 +7,8 @@ from os import mkdir
 import pytest
 import moviepy.editor
 
-from plexer.const import METADATA_FILE_NAME
-from plexer.file_manager import FileManager
+from plexer_cli.const import METADATA_FILE_NAME
+from plexer_cli.file_manager import FileManager
 
 
 class TestFileManager:

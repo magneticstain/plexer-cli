@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 Plexer - Normalize media files for use with Plex Media Server
+
+Main App Entrypoint
 """
 
 __author__ = "magneticstain"
@@ -15,9 +17,27 @@ from logzero import logger
 
 from plexer_cli.file_manager import FileManager
 
+def fetch_cli_args() -> argparse.Namespace:
+    """Parse CLI arguments passed to the application during startup"""
 
-def main(cli_args):
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "-v", "--verbose", action="count", default=0, help="Verbosity (-v, -vv, etc)"
+    )
+
+    parser.add_argument("--version", action="version", version=f"{__version__}")
+
+    parser.add_argument("-s", "--source-dir", action="store", required=True)
+    parser.add_argument("-d", "--destination-dir", action="store", required=True)
+
+    return parser.parse_args()
+
+
+def main():
     """Main entry point of the app"""
+
+    cli_args = fetch_cli_args()
 
     # logzero.json(enable=True)
     logzero.loglevel(logzero.DEBUG)
@@ -36,20 +56,3 @@ def main(cli_args):
     logger.info("processing artifacts")
     fm.process_directory(dir_artifacts=artifacts)
     logger.info("artifact processing completed successfully")
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "-v", "--verbose", action="count", default=0, help="Verbosity (-v, -vv, etc)"
-    )
-
-    parser.add_argument("--version", action="version", version=f"{__version__}")
-
-    parser.add_argument("-s", "--source-dir", action="store", required=True)
-    parser.add_argument("-d", "--destination-dir", action="store", required=True)
-
-    args = parser.parse_args()
-
-    main(args)

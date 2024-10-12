@@ -46,11 +46,11 @@ Documentation = "https://github.com/magneticstain/plexer#readme"
 Issues = "https://github.com/magneticstain/plexer/issues"
 Source = "https://github.com/magneticstain/plexer"
 
-# [project.scripts]
-# plexer = "plexer_cli:main"
+[project.scripts]
+plexer = "plexer_cli.main:main"
 
 [tool.hatch.version]
-path = "plexer.py"
+path = "src/plexer_cli/main.py"
 
 [tool.hatch.envs.dev]
 dependencies = [

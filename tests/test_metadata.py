@@ -4,8 +4,8 @@ Plexer Unit Tests - Metadata.py
 
 import pytest
 
-from plexer.const import METADATA_FILE_NAME
-from plexer.metadata import Metadata
+from plexer_cli.const import METADATA_FILE_NAME
+from plexer_cli.metadata import Metadata
 
 
 class TestMetadata:
