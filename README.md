@@ -36,10 +36,36 @@ Currently, Plexer only supports organizing movies and other individual video fil
 
 ## Install
 
-To install plexer, us pip/[pipx](https://github.com/pypa/pipx)/[pipenv](https://pipenv.pypa.io/en/latest/)/your favorite build front-end to install the `plexer_cli` package.
+To install Plexer, there are a few options available.
+
+### Docker
+
+The most portable way to install and run Plexer is by using Docker.
+
+#### Via Container Registry
+
+The easiest way to run Plexer in Docker is by using the public containers hosted on container registries. Plexer images are available on both Docker Hub and GitHub Container Registry. See the commands below for how to run Plexer using each registry.
+
+##### Docker Hub
 
 ```bash
-pip install plexer_cli
+docker run --rm -it magneticstain/plexer_cli
+```
+
+##### Github Container Registry
+
+```bash
+docker run --rm -it ghcr.io/magneticstain/plexer
+```
+
+#### Via Local Build
+
+In the case that container registries are unavailable, there's also the option to build the image locally. To do that, check out the `main` branch of this repo, build the Plexer image, and run it.
+
+```bash
+git clone https://github.com/magneticstain/plexer.git
+docker build -t plexer_cli .
+docker run --rm -it plexer_cli
 ```
 
 ## Requirements
