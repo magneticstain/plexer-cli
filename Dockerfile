@@ -4,9 +4,8 @@ FROM python:3.13-slim AS build
 
 WORKDIR /build
 
-RUN pip install --upgrade pip
-RUN pip install pipx
-RUN pipx install hatch
+RUN pip install pipx==1.7.1
+RUN pipx install hatch==1.13.0
 
 COPY . .
 
