@@ -78,7 +78,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Log in to the Container registry
+      - name: Log in to Github Container registry
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567  # v3.3.0
         with:
           registry: ghcr.io
