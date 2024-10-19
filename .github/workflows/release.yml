@@ -45,17 +45,6 @@ jobs:
       - name: Build dist artifacts
         run: hatch build
       
-      # Github Release
-      - name: Create Github Release
-        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191  # v2.0.8
-        with:
-          name: 
-          files: |
-            dist/*
-          fail_on_unmatched_files: true
-          generate_release_notes: true
-          make_latest: true
-      
       # PyPI Release
       # required instead of using hatch due to usage of trusted publishers
       - name: Publish to TestPyPI
@@ -108,4 +97,15 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+      
+      # Github Release
+      - name: Create Github Release
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191  # v2.0.8
+        with:
+          name: 
+          files: |
+            dist/*
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          make_latest: true
       
