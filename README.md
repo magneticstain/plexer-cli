@@ -49,13 +49,13 @@ The easiest way to run Plexer in Docker is by using the public containers hosted
 ##### Docker Hub
 
 ```bash
-docker run --rm -it magneticstain/plexer_cli
+docker run --rm -it magneticstain/plexer-cli
 ```
 
 ##### Github Container Registry
 
 ```bash
-docker run --rm -it ghcr.io/magneticstain/plexer
+docker run --rm -it ghcr.io/magneticstain/plexer-cli
 ```
 
 #### Via Local Build
@@ -63,7 +63,7 @@ docker run --rm -it ghcr.io/magneticstain/plexer
 In the case that container registries are unavailable, there's also the option to build the image locally. To do that, check out the `main` branch of this repo, build the Plexer image, and run it.
 
 ```bash
-git clone https://github.com/magneticstain/plexer.git
+git clone https://github.com/magneticstain/plexer-cli.git
 docker build -t plexer_cli .
 docker run --rm -it plexer_cli
 ```
