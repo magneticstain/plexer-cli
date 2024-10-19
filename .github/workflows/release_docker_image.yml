@@ -11,10 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: release
 
-    strategy:
-      matrix:
-        container_repos: ["docker.io", "ghcr.io"]
-
     permissions:
       attestations: write
       contents: read
