@@ -82,6 +82,7 @@ class FileManager:
           during artifact processing.
         """
 
+        metadata_file_found = False
         video_metadata = Metadata()
 
         logger.debug("starting directory artifact processing")
@@ -107,6 +108,8 @@ class FileManager:
                 video_metadata.import_metadata_from_file(
                     file_path=artifact.absolute_path
                 )
+
+                metadata_file_found = True
             elif artifact.mime_type.startswith("video/"):
                 # move + rename
                 logger.info("video file found, renaming")
@@ -129,3 +132,6 @@ class FileManager:
                 logger.info("unnecessary file found, deleting")
 
                 os.remove(artifact.absolute_path)
+        
+        if not metadata_file_found:
+            pass

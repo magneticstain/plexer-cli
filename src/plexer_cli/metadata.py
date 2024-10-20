@@ -5,6 +5,7 @@ Module: Metadata - code for analyzing and managing video metadata
 """
 
 import json
+import logging
 from logzero import logger
 
 
@@ -39,3 +40,17 @@ class Metadata:
             logger.error(
                 'data missing in metadata file; "%s" field was not found', e.args[0]
             )
+    
+    def export_metadata_file(self, file_path: str) -> None:
+        """
+        Write metadata file to disk with object values set
+        """
+
+        metadata_json = json.dumps(vars(self))
+
+        logger.debug("exporting data as: %s", metadata_json)
+
+        with open(file_path, mode="w", encoding="utf-8") as metadata_file:
+            metadata_file.write(metadata_json)
+        
+        logging.info('metadata written to metadata file ( %s ) successfully', file_path)
