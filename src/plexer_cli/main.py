@@ -22,10 +22,6 @@ def fetch_cli_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "-v", "--verbose", action="count", default=0, help="Verbosity (-v, -vv, etc)"
-    )
-
     parser.add_argument("--version", action="version", version=f"{__version__}")
 
     parser.add_argument("-s", "--source-dir", action="store", required=True)
