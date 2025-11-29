@@ -29,14 +29,12 @@ Currently, Plexer only supports organizing movies and other individual video fil
 ### Roadmap
 
 - [ ] Support for TV Shows ([#28](https://github.com/magneticstain/plexer/issues/28))
-- [ ] Docker implementations ([#29](https://github.com/magneticstain/plexer/issues/29))
+- [X] Docker implementations ([#29](https://github.com/magneticstain/plexer/issues/29))
 - [ ] MacOS support ([#30](https://github.com/magneticstain/plexer/issues/30))
 - [ ] Windows support ([#31](https://github.com/magneticstain/plexer/issues/31))
 - [ ] Metadata inference using file/directory info (i.e. analyze the video files to "guess" what the name, year, etc is) ([#32](https://github.com/magneticstain/plexer/issues/32))
 
 ## Install
-
-To install Plexer, there are a few options available.
 
 ### Docker
 
@@ -58,7 +56,7 @@ docker run --rm -it magneticstain/plexer-cli
 docker run --rm -it ghcr.io/magneticstain/plexer-cli
 ```
 
-#### Via Local Build
+#### Via Local Image Build
 
 In the case that container registries are unavailable, there's also the option to build the image locally. To do that, check out the `main` branch of this repo, build the Plexer image, and run it.
 
