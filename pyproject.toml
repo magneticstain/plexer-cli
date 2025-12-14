@@ -1,39 +1,47 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling >= 1.26"]
 build-backend = "hatchling.build"
 
 [project]
 name = "plexer_cli"
 dynamic = ["version"]
-description = "Normalize media files for use with Plex Media Server"
+description = "Normalize media files and directories for use with Plex Media Server"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = "MIT"
+license-files = ["LICENSE"]
 keywords = ["plex", "media", "catagorization", "organization", "formatting"]
 authors = [
   { name = "Josh Carlson", email = "837837+magneticstain@users.noreply.github.com" },
 ]
 classifiers = [
-  "License :: OSI Approved :: MIT License",
-
-  "Intended Audience :: System Administrators",
-  "Topic :: Utilities",
-
   "Development Status :: 2 - Pre-Alpha",
-
-  "Operating System :: Unix",
 
   "Environment :: Console",
 
+  "Framework :: Hatch",
+  "Framework :: Pytest",
+  "Framework :: tox",
+
+  "Intended Audience :: System Administrators",
+
+  "License :: OSI Approved :: MIT License",
+
+  "Natural Language :: English",
+
+  "Operating System :: MacOS",
+  "Operating System :: Unix",
+
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 
-  "Framework :: Hatch",
-  "Framework :: Pytest",
-  "Framework :: tox"
+  "Topic :: Multimedia :: Video",
+  "Topic :: Utilities",
 ]
 dependencies = [
   "logzero~=1.7.0",
@@ -41,20 +49,22 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/magneticstain/plexer.git"
-Documentation = "https://github.com/magneticstain/plexer#readme"
+Repository = "https://github.com/magneticstain/plexer"
+Documentation = "https://github.com/magneticstain/plexer-cli/wiki"
 Issues = "https://github.com/magneticstain/plexer/issues"
-Source = "https://github.com/magneticstain/plexer"
 
 [project.scripts]
 plexer = "plexer_cli.main:main"
 
+# Plugins & Tools
+## Hatch
 [tool.hatch.version]
 path = "src/plexer_cli/main.py"
 
 [tool.hatch.envs.dev]
+installer = "uv"
 dependencies = [
   "ruff~=0.6.6",
-  "pytest~=8.3.3",
+  "pytest~=9.0.1",
   "moviepy~=1.0.3"
 ]
