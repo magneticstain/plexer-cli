@@ -68,6 +68,14 @@ docker run --rm -it plexer_cli
 
 ## Requirements
 
+### Linux and MacOS Native Install
+
+If you've installed plexer-cli natively (i.e. outside of a Docker container) on Ubuntu, Devian, Fedora, etc, or MacOS, you will also need to install additional dependencies:
+
+#### Python-Magic
+
+While `python-magic` is imported in the standard fashion (via pip/python requirements), it itself depends on the presence of the libmagic C library. To install this library, follow [the installation instructions provided in the `python-magic` README](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation).
+
 ### Media Metadata
 
 The most important requirement before running plexer is to ensure that you've created a `.plexer` file in each of your target directories.
