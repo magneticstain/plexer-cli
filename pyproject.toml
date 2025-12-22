@@ -60,6 +60,10 @@ plexer = "plexer_cli.main:main"
 [tool.hatch.version]
 path = "src/plexer_cli/main.py"
 
+# Environments
+[tool.hatch.envs.default]
+installer = "uv"
+
 [tool.hatch.envs.dev]
 installer = "uv"
 dependencies = [
