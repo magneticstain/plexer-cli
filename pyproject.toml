@@ -67,8 +67,9 @@ installer = "uv"
 [tool.hatch.envs.dev]
 installer = "uv"
 dependencies = [
-  "ruff~=0.6.6",
-  "pytest~=9.0.1",
+  "ruff~=0.14.10",
+  "pytest~=9.0.2",
   "pytest-sugar~=1.1.1",
-  "moviepy~=1.0.3"
+  "moviepy~=2.2.1",
+  "tox[uv]~=4.32.0",
 ]
