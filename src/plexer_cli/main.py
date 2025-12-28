@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
 """
 Plexer - Normalize media files for use with Plex Media Server
 
@@ -16,6 +16,7 @@ from logzero import logger
 # https://logzero.readthedocs.io/en/latest/#advanced-usage-examples
 
 from plexer_cli.file_manager import FileManager
+
 
 def fetch_cli_args() -> argparse.Namespace:
     """Parse CLI arguments passed to the application during startup"""
@@ -39,9 +40,13 @@ def main():
 
     cli_args = fetch_cli_args()
 
-    # logzero.json(enable=True)
-    logzero.loglevel(logzero.DEBUG)
     logzero.logfile(None)
+    if cli_args.verbose == 1:
+        logzero.loglevel(logzero.INFO)
+    elif cli_args.verbose >= 2:
+        logzero.loglevel(logzero.DEBUG)
+    else:
+        logzero.loglevel(logzero.WARNING)
 
     logger.info("starting Plexer")
     logger.debug("options: %s", cli_args)

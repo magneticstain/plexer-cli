@@ -31,23 +31,23 @@ class FileManager:
         Gather the names of all files and directories in a given directory and return as list
 
 
-        Target directory is the source directory by default.
+        Target directory is the source directory by default, but can be specified via parameter.
         """
 
         artifacts = []
         tgt_dir = tgt_dir if tgt_dir else self.src_dir
 
         with os.scandir(tgt_dir) as sd_iter:
-            for artifact_entry in sd_iter:
+            for dir_artifact in sd_iter:
                 try:
-                    artifact_mime_type = from_file(artifact_entry.path, mime=True)
+                    artifact_mime_type = from_file(dir_artifact.path, mime=True)
                 except IsADirectoryError:
                     artifact_mime_type = "directory"
 
                 artifacts.append(
                     Artifact(
-                        name=artifact_entry.name,
-                        path=artifact_entry.path,
+                        name=dir_artifact.name,
+                        path=dir_artifact.path,
                         mime_type=artifact_mime_type,
                     )
                 )

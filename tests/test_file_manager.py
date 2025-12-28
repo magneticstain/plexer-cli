@@ -5,7 +5,7 @@ Plexer Unit Tests - File_Manager.py
 from os import mkdir
 
 import pytest
-import moviepy.editor
+from moviepy import ColorClip
 
 from plexer_cli.const import METADATA_FILE_NAME
 from plexer_cli.file_manager import FileManager
@@ -22,9 +22,7 @@ class TestFileManager:
 
         Currently generates a 100 x 100, 3s black video clip"""
 
-        vid_clip = moviepy.editor.ColorClip(
-            size=(100, 100), color=(0, 0, 0), duration=3
-        )
+        vid_clip = ColorClip(size=(100, 100), color=(0, 0, 0), duration=3)
 
         return vid_clip
 

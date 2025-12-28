@@ -1,60 +1,119 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling >= 1.26"]
 build-backend = "hatchling.build"
 
 [project]
 name = "plexer_cli"
 dynamic = ["version"]
-description = "Normalize media files for use with Plex Media Server"
+description = "Normalize media files and directories for use with Plex Media Server"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = "MIT"
+license-files = ["LICENSE"]
 keywords = ["plex", "media", "catagorization", "organization", "formatting"]
 authors = [
   { name = "Josh Carlson", email = "837837+magneticstain@users.noreply.github.com" },
 ]
 classifiers = [
-  "License :: OSI Approved :: MIT License",
-
-  "Intended Audience :: System Administrators",
-  "Topic :: Utilities",
-
   "Development Status :: 2 - Pre-Alpha",
-
-  "Operating System :: Unix",
 
   "Environment :: Console",
 
+  "Framework :: Hatch",
+  "Framework :: Pytest",
+  "Framework :: tox",
+
+  "Intended Audience :: System Administrators",
+
+  "Natural Language :: English",
+
+  "Operating System :: MacOS",
+  "Operating System :: Unix",
+
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 
-  "Framework :: Hatch",
-  "Framework :: Pytest",
-  "Framework :: tox"
+  "Topic :: Multimedia :: Video",
+  "Topic :: Utilities",
 ]
 dependencies = [
   "logzero~=1.7.0",
-  "python-magic~=0.4.27"
+  "python-magic~=0.4.27",
 ]
 
 [project.urls]
-Repository = "https://github.com/magneticstain/plexer.git"
-Documentation = "https://github.com/magneticstain/plexer#readme"
+Repository = "https://github.com/magneticstain/plexer"
+Documentation = "https://github.com/magneticstain/plexer-cli/wiki"
 Issues = "https://github.com/magneticstain/plexer/issues"
-Source = "https://github.com/magneticstain/plexer"
 
 [project.scripts]
 plexer = "plexer_cli.main:main"
 
+# Environments
+#[tool.hatch.envs.default]
+#installer = "uv"
+
+# Plugins & Tools
+## Hatch
 [tool.hatch.version]
 path = "src/plexer_cli/main.py"
 
-[tool.hatch.envs.dev]
-dependencies = [
-  "ruff~=0.6.6",
-  "pytest~=8.3.3",
-  "moviepy~=1.0.3"
-]
+## tox
+# [tool.tox]
+# requires = ["tox>=4"]
+# env_list = [
+#   "3.15",
+#   "3.14",
+#   "3.13",
+#   "3.12",
+#   "3.11",
+#   "3.10",
+#   "format",
+#   "lint",
+#   "test",
+#   "type"
+# ]
+
+# [tool.tox.env_run_base]
+# description = "Run test under {base_python}"
+# deps = [
+#   "pytest>=6",
+#   "moviepy>=2.2.1"
+# ]
+# commands = [["pytest"]]
+
+# [tool.tox.env.format]
+# description = "run code formatters"
+# deps = [
+#   "ruff>=0.14.10"
+# ]
+# commands = [["ruff", "format"]]
+
+# [tool.tox.env.lint]
+# description = "run linters"
+# deps = [
+#   "ruff>=0.14.10"
+# ]
+# commands = [["ruff", "check"]]
+
+# [tool.tox.env.test]
+# description = "run test suites"
+# deps = [
+#   "pytest>=6",
+#   "moviepy>=2.2.1"
+# ]
+# commands = [["pytest"]]
+
+# [tool.tox.env.type]
+# description = "run type check on code base"
+# deps = [
+#   "mypy==1.11.2",
+#   "types-cachetools>=5.5.0.20240820",
+#   "types-chardet>=5.0.4.6"
+# ]
+# commands = [["mypy", "src{/}plexer_cli"], ["mypy", "tests"]]
