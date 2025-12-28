@@ -40,9 +40,13 @@ def main():
 
     cli_args = fetch_cli_args()
 
-    # logzero.json(enable=True)
-    logzero.loglevel(logzero.DEBUG)
     logzero.logfile(None)
+    if cli_args.verbose == 1:
+        logzero.loglevel(logzero.INFO)
+    elif cli_args.verbose >= 2:
+        logzero.loglevel(logzero.DEBUG)
+    else:
+        logzero.loglevel(logzero.WARNING)
 
     logger.info("starting Plexer")
     logger.debug("options: %s", cli_args)
