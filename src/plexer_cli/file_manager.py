@@ -4,8 +4,8 @@ Plexer - Normalize media files for use with Plex Media Server
 Module: File Manager - code for file-related ops
 """
 
-import os
 from pathlib import Path
+import os
 from magic import from_file
 from logzero import logger
 
@@ -28,8 +28,7 @@ class FileManager:
 
     def get_artifacts(self, tgt_dir="") -> list:
         """
-        Gather the names of all files and directories in a given directory and return as list
-
+        Gather the names of all files and directories in a given directory and return as list.
 
         Target directory is the source directory by default, but can be specified via parameter.
         """
@@ -72,17 +71,47 @@ class FileManager:
 
         return artifacts
 
-    def process_directory(self, dir_artifacts: list) -> None:
+    def rename_artifact(self, artifact: Artifact, video_metadata: Metadata) -> Artifact:
         """
-        Traverse the given directory artifacts, rename the
-          video files accordingly, and delete everything else
+        Rename an artifact to the new name generated from the given metadata
 
-        NOTE: the artifact for the metadata file MUST come first
-          in the artifact list. Failing to do so may lead to instability
-          during artifact processing.
+        Returns the new, updated artifact object
         """
 
-        video_metadata = Metadata()
+        new_artifact_name = f"{video_metadata.name} ({video_metadata.release_year})"
+
+        # get artifact file info for srrc/dst path generation
+        artifact_file_path = Path(artifact.absolute_path)
+        artifact_parent_dir = artifact_file_path.parent
+        artifact_file_ext = (
+            "" if artifact.mime_type == "directory" else artifact_file_path.suffix
+        )
+
+        src_file = artifact_file_path.absolute()
+        dst_file = f"{artifact_parent_dir}/{new_artifact_name}{artifact_file_ext}"
+
+        logger.debug(
+            "renaming artifact: [ OLD PATH: %s ] to [ NEW PATH: %s ]",
+            src_file,
+            dst_file,
+        )
+
+        if src_file != dst_file:
+            os.rename(src_file, dst_file)
+        else:
+            logger.debug(
+                "source and destination paths are identical; skipping rename operation"
+            )
+
+        artifact.name = new_artifact_name
+        artifact.absolute_path = dst_file
+
+        return artifact
+
+    def process_directory(self, dir_artifacts: list, video_metadata=Metadata()) -> None:
+        """
+        Traverse the given directory artifacts, rename the video files accordingly, and delete everything else
+        """
 
         logger.debug("starting directory artifact processing")
 
@@ -97,35 +126,31 @@ class FileManager:
             if artifact.mime_type == "directory":
                 logger.info("subdirectory found, processing")
 
-                # start recursive subprocessing
-                new_dir_artifacts = self.get_artifacts(tgt_dir=artifact.absolute_path)
-                self.process_directory(dir_artifacts=new_dir_artifacts)
-            elif artifact.name == METADATA_FILE_NAME:
-                # read in video metadata
-                logger.info("metadata file found, importing")
+                # use heuristics to attempt to determine metadata from directory name
+                if video_metadata.do_heuristic_analysis(file_name=artifact.name):
+                    logger.info(
+                        "metadata found for directory via heuristics - name: %s, release_year: %d",
+                        video_metadata.name,
+                        video_metadata.release_year,
+                    )
+                else:
+                    logger.info(
+                        "no metadata found for directory via heuristics; prompting user for manual input"
+                    )
+                    video_metadata.prompt_user_for_metadata()
 
-                video_metadata.import_metadata_from_file(
-                    file_path=artifact.absolute_path
-                )
-            elif artifact.mime_type.startswith("video/"):
-                # move + rename
-                logger.info("video file found, renaming")
+                if video_metadata.metadata_found:
+                    logger.info("renaming artifact based on gathered metadata")
+                    artifact = self.rename_artifact(
+                        artifact=artifact, video_metadata=video_metadata
+                    )
 
-                file_path = Path(artifact.absolute_path)
-                file_dir = file_path.parent
-                file_ext = file_path.suffix
-
-                src_file = artifact.absolute_path
-                dst_file = (
-                    f"{file_dir}/{video_metadata.name}"
-                    f" ({video_metadata.release_year}){file_ext}"
-                )
-
-                logger.debug("moving %s to %s", src_file, dst_file)
-
-                os.rename(src_file, dst_file)
+                    # start recursive subprocessing
+                    new_dir_artifacts = self.get_artifacts(
+                        tgt_dir=artifact.absolute_path
+                    )
+                    self.process_directory(
+                        dir_artifacts=new_dir_artifacts, video_metadata=video_metadata
+                    )
             else:
-                # delete the file
-                logger.info("unnecessary file found, deleting")
-
-                os.remove(artifact.absolute_path)
+                logger.info("file artifact found, processing")

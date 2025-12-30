@@ -40,7 +40,7 @@ def main():
 
     cli_args = fetch_cli_args()
 
-    logzero.logfile(None)
+    # logzero.logfile(None)
     if cli_args.verbose == 1:
         logzero.loglevel(logzero.INFO)
     elif cli_args.verbose >= 2:
@@ -61,3 +61,7 @@ def main():
     logger.info("processing artifacts")
     fm.process_directory(dir_artifacts=artifacts)
     logger.info("artifact processing completed successfully")
+
+
+if __name__ == "__main__":
+    main()
