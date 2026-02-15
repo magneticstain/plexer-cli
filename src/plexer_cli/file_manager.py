@@ -197,11 +197,12 @@ class FileManager:
                     new_dir_artifacts = self.get_artifacts(
                         tgt_dir=artifact.absolute_path
                     )
-                    self.process_directory(
-                        dir_artifacts=new_dir_artifacts,
-                        video_metadata=video_metadata,
-                        dry_run=dry_run,
-                    )
+                    if new_dir_artifacts:
+                        self.process_directory(
+                            dir_artifacts=new_dir_artifacts,
+                            video_metadata=video_metadata,
+                            dry_run=dry_run,
+                        )
                 else:
                     logger.warning(
                         "no metadata found for directory after exhausting all methods; skipping renaming and subprocessing"
