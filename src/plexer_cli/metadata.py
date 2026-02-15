@@ -28,26 +28,6 @@ class Metadata:
         if release_year >= 0:
             self.release_year = release_year
 
-    def import_metadata_from_file(self, file_path: str) -> None:
-        """
-        Read in given file and process data into metadata values
-        """
-
-        logger.debug("metadata file found @ %s - importing data", file_path)
-
-        with open(file_path, mode="r", encoding="utf-8") as metadata_file:
-            imported_metadata = json.load(metadata_file)
-
-        logger.debug("data imported as: %s", imported_metadata)
-
-        try:
-            self.name = imported_metadata["name"]
-            self.release_year = imported_metadata["release_year"]
-        except KeyError as e:
-            logger.error(
-                'data missing in metadata file; "%s" field was not found', e.args[0]
-            )
-
     def scrub_artifact_name(self, artifact_name: str) -> str:
         """
         Remove common separators and file extensions from given artifact name.
@@ -63,6 +43,29 @@ class Metadata:
         logger.debug("artifact name post-scrubbing: %s", scrubbed_name)
 
         return scrubbed_name
+
+    def prompt_user_for_metadata(self) -> None:
+        """
+        Prompt the user for metadata values via CLI input
+        """
+
+        logger.debug("prompting user for metadata input")
+
+        prompt_sess = PromptSession()
+
+        user_name = prompt_sess.prompt(
+            "Enter the correct name for this media: ", default=self.name
+        )
+        user_release_year = prompt_sess.prompt(
+            "Enter the release year for this media: ",
+            default=str(
+                self.release_year
+            ),  # `default` argument _must_ be a string, per docs
+        )
+
+        self.name = user_name
+        self.release_year = int(user_release_year)
+        self.metadata_found = True
 
     def do_heuristic_analysis(self, file_name: str) -> bool:
         """
@@ -103,25 +106,22 @@ class Metadata:
         )
         return False
 
-    def prompt_user_for_metadata(self) -> None:
+    def import_metadata_from_file(self, file_path: str) -> None:
         """
-        Prompt the user for metadata values via CLI input
+        Read in given file and process data into metadata values
         """
 
-        logger.debug("prompting user for metadata input")
+        logger.debug("metadata file found @ %s - importing data", file_path)
 
-        prompt_sess = PromptSession()
+        with open(file_path, mode="r", encoding="utf-8") as metadata_file:
+            imported_metadata = json.load(metadata_file)
 
-        user_name = prompt_sess.prompt(
-            "Enter the correct name for this media: ", default=self.name
-        )
-        user_release_year = prompt_sess.prompt(
-            "Enter the release year for this media: ",
-            default=str(
-                self.release_year
-            ),  # `default` argument _must_ be a string, per docs
-        )
+        logger.debug("data imported as: %s", imported_metadata)
 
-        self.name = user_name
-        self.release_year = int(user_release_year)
-        self.metadata_found = True
+        try:
+            self.name = imported_metadata["name"]
+            self.release_year = imported_metadata["release_year"]
+        except KeyError as e:
+            logger.error(
+                'data missing in metadata file; "%s" field was not found', e.args[0]
+            )
