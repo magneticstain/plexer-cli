@@ -1,0 +1,34 @@
+name: Bug Report
+about: Report a bug that you've found in this application.
+title: 'Bug: '
+labels: bug
+projects: "magneticstain/5"
+assignees: magneticstain
+type: bug
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is, what component it's in, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Steps To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what was expected to happen.
+    validations:
+      required: true

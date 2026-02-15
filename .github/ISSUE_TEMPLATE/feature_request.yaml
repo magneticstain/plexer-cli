@@ -1,0 +1,29 @@
+name: Feature Request
+about: Suggest an new feature for this project
+title: 'Feat: '
+labels: feature
+projects: "magneticstain/5"
+assignees: magneticstain
+type: feature
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What does this feature intend to do?
+    validations:
+      required: true
+  - type: textarea
+    id: benefit
+    attributes:
+      label: Benefit
+      description: What is the benefit of implementing this?
+    validations:
+      required: true
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add any other context, links, or screenshots about the feature request here.
+    validations:
+      required: true
