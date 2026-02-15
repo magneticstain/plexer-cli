@@ -12,11 +12,8 @@ from magic import from_file
 from logzero import logger
 
 from .artifact import Artifact
-from .const import METADATA_FILE_NAME
+from .const import ARTIFACT_NAME_REGEX, METADATA_FILE_NAME
 from .metadata import Metadata
-
-
-ARTIFACT_NAME_REGEX = r"^[ -~]+\([\d]{4}\) ?(\{[ -~]+\})?$"
 
 
 class FileManager:

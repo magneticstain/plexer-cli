@@ -103,7 +103,22 @@ class TestFileManager:
 
         prepped_pmd_artifacts = file_mgr.prep_artifacts(artifacts=pmd_artifacts)
 
-        file_mgr.process_directory(dir_artifacts=prepped_pmd_artifacts)
+        file_mgr.process_directory(
+            dir_artifacts=prepped_pmd_artifacts, prompt_behavior="none"
+        )
+
+        assert True
+
+    def test_process_directory_dry_run(self, file_mgr, preloaded_media_dir):
+        """Process the artifacts in preloaded media directory as is and confirm the results"""
+
+        pmd_artifacts = file_mgr.get_artifacts(tgt_dir=preloaded_media_dir)
+
+        prepped_pmd_artifacts = file_mgr.prep_artifacts(artifacts=pmd_artifacts)
+
+        file_mgr.process_directory(
+            dir_artifacts=prepped_pmd_artifacts, prompt_behavior="none", dry_run=True
+        )
 
         assert True
 
