@@ -32,6 +32,12 @@ def fetch_cli_args() -> argparse.Namespace:
     parser.add_argument("-s", "--source-dir", action="store", required=True)
     parser.add_argument("-d", "--destination-dir", action="store", required=True)
 
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Perform a trial run with no changes made",
+    )
+
     return parser.parse_args()
 
 
@@ -50,6 +56,8 @@ def main():
 
     logger.info("starting Plexer")
     logger.debug("options: %s", cli_args)
+    if cli_args.dry_run:
+        logger.info("performing a dry run; NO CHANGES WILL BE MADE")
 
     fm = FileManager(src_dir=cli_args.source_dir, dst_dir=cli_args.destination_dir)
 
@@ -59,7 +67,7 @@ def main():
     logger.info("%d artifact(s) found in source directory", len(artifacts))
 
     logger.info("processing artifacts")
-    fm.process_directory(dir_artifacts=artifacts)
+    fm.process_directory(dir_artifacts=artifacts, dry_run=cli_args.dry_run)
     logger.info("artifact processing completed successfully")
 
 

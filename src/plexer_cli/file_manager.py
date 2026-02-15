@@ -4,14 +4,19 @@ Plexer - Normalize media files for use with Plex Media Server
 Module: File Manager - code for file-related ops
 """
 
-from pathlib import Path
 import os
+import re
+
+from pathlib import Path
 from magic import from_file
 from logzero import logger
 
 from .artifact import Artifact
 from .const import METADATA_FILE_NAME
 from .metadata import Metadata
+
+
+ARTIFACT_NAME_REGEX = r"^[ -~]+\([\d]{4}\) ?(\{[ -~]+\})?$"
 
 
 class FileManager:
@@ -71,7 +76,33 @@ class FileManager:
 
         return artifacts
 
-    def rename_artifact(self, artifact: Artifact, video_metadata: Metadata) -> Artifact:
+    def check_artifact(self, artifact: Artifact) -> bool:
+        """
+        Perform any checks needed to determine if the artifact is valid for further processing
+
+        Right now, this includes:
+            * Checking if the artifact name is in a valid format required by Plex
+        """
+
+        valid_artifact = False
+
+        artifact_name_reg = re.compile(ARTIFACT_NAME_REGEX)
+        if artifact_name_reg.match(artifact.name):
+            logger.debug(
+                "artifact name is in a valid format for Plex: %s", artifact.name
+            )
+
+            valid_artifact = True
+        else:
+            logger.debug(
+                "artifact name is NOT in a valid format for Plex: %s", artifact.name
+            )
+
+        return valid_artifact
+
+    def rename_artifact(
+        self, artifact: Artifact, video_metadata: Metadata, dry_run=False
+    ) -> Artifact:
         """
         Rename an artifact to the new name generated from the given metadata
 
@@ -97,18 +128,25 @@ class FileManager:
         )
 
         if src_file != dst_file:
-            os.rename(src_file, dst_file)
+            logger.debug(
+                "executing rename operation on filesystem: %s -> %s", src_file, dst_file
+            )
+            if not dry_run:
+                os.rename(src_file, dst_file)
+                artifact.name = new_artifact_name
+                artifact.absolute_path = dst_file
+            else:
+                logger.debug("dry run enabled; skipping actual rename operation")
         else:
             logger.debug(
                 "source and destination paths are identical; skipping rename operation"
             )
 
-        artifact.name = new_artifact_name
-        artifact.absolute_path = dst_file
-
         return artifact
 
-    def process_directory(self, dir_artifacts: list, video_metadata=Metadata()) -> None:
+    def process_directory(
+        self, dir_artifacts: list, video_metadata=Metadata(), dry_run=False
+    ) -> None:
         """
         Traverse the given directory artifacts, rename the video files accordingly, and delete everything else
         """
@@ -126,6 +164,14 @@ class FileManager:
             if artifact.mime_type == "directory":
                 logger.info("subdirectory found, processing")
 
+                # first, check if we even need to do anything at all
+                if self.check_artifact(artifact=artifact):
+                    logger.info(
+                        "directory artifact is already in a valid format for Plex; skipping subprocessing"
+                    )
+
+                    continue
+
                 # use heuristics to attempt to determine metadata from directory name
                 if video_metadata.do_heuristic_analysis(file_name=artifact.name):
                     logger.info(
@@ -142,7 +188,9 @@ class FileManager:
                 if video_metadata.metadata_found:
                     logger.info("renaming artifact based on gathered metadata")
                     artifact = self.rename_artifact(
-                        artifact=artifact, video_metadata=video_metadata
+                        artifact=artifact,
+                        video_metadata=video_metadata,
+                        dry_run=dry_run,
                     )
 
                     # start recursive subprocessing
@@ -150,7 +198,13 @@ class FileManager:
                         tgt_dir=artifact.absolute_path
                     )
                     self.process_directory(
-                        dir_artifacts=new_dir_artifacts, video_metadata=video_metadata
+                        dir_artifacts=new_dir_artifacts,
+                        video_metadata=video_metadata,
+                        dry_run=dry_run,
+                    )
+                else:
+                    logger.warning(
+                        "no metadata found for directory after exhausting all methods; skipping renaming and subprocessing"
                     )
             else:
                 logger.info("file artifact found, processing")
