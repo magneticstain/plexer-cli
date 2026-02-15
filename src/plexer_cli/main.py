@@ -33,6 +33,13 @@ def fetch_cli_args() -> argparse.Namespace:
     parser.add_argument("-d", "--destination-dir", action="store", required=True)
 
     parser.add_argument(
+        "--prompt",
+        choices=["all", "none", "default"],
+        default="default",
+        help="Behavior to take in regards to user prompts (e.g. correcting names for overwriting files). all = prompt user for every artifact; none = never prompt - just trust the heuristics; default = prompt for incomplete matches only",
+    )
+
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Perform a trial run with no changes made",
@@ -67,7 +74,11 @@ def main():
     logger.info("%d artifact(s) found in source directory", len(artifacts))
 
     logger.info("processing artifacts")
-    fm.process_directory(dir_artifacts=artifacts, dry_run=cli_args.dry_run)
+    fm.process_directory(
+        dir_artifacts=artifacts,
+        prompt_behavior=cli_args.prompt,
+        dry_run=cli_args.dry_run,
+    )
     logger.info("artifact processing completed successfully")
 
 

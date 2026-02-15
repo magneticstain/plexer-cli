@@ -145,7 +145,11 @@ class FileManager:
         return artifact
 
     def process_directory(
-        self, dir_artifacts: list, video_metadata=Metadata(), dry_run=False
+        self,
+        dir_artifacts: list,
+        video_metadata=Metadata(),
+        prompt_behavior="default",
+        dry_run=False,
     ) -> None:
         """
         Traverse the given directory artifacts, rename the video files accordingly, and delete everything else
@@ -173,13 +177,18 @@ class FileManager:
                     continue
 
                 # use heuristics to attempt to determine metadata from directory name
+                video_metadata_found = False
                 if video_metadata.do_heuristic_analysis(file_name=artifact.name):
                     logger.info(
                         "metadata found for directory via heuristics - name: %s, release_year: %d",
                         video_metadata.name,
                         video_metadata.release_year,
                     )
-                else:
+                    video_metadata_found = True
+
+                if prompt_behavior == "all" or (
+                    prompt_behavior == "default" and not video_metadata_found
+                ):
                     logger.info(
                         "no metadata found for directory via heuristics; prompting user for manual input"
                     )
