@@ -19,7 +19,7 @@ RUN hatch build
 FROM python:3.13-alpine@sha256:81362dd1ee15848b118895328e56041149e1521310f238ed5b2cdefe674e6dbf
 
 RUN apk update && \
-    apk add libmagic
+    apk add --no-cache libmagic
 
 RUN addgroup --system --gid 888 plexer && \
     adduser --system --uid 888 --ingroup plexer plexer
