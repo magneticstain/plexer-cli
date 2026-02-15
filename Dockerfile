@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.13-slim AS build
+ARG PYTHON_VERSION=3.13
+
+FROM python:${PYTHON_VERSION}-slim AS build
 
 WORKDIR /build
 
@@ -16,7 +18,7 @@ RUN hatch build
 ########################
 
 # linux/amd64 arch
-FROM python:3.13-alpine@sha256:81362dd1ee15848b118895328e56041149e1521310f238ed5b2cdefe674e6dbf
+FROM python:${PYTHON_VERSION}-alpine@sha256:81362dd1ee15848b118895328e56041149e1521310f238ed5b2cdefe674e6dbf
 
 RUN apk update && \
     apk add --no-cache libmagic

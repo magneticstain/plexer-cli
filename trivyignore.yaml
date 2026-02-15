@@ -1,0 +1,2 @@
+misconfigurations:
+  - id: AVD-DS-0026  # Missing Dockerfile HEALTHCHECK; not required for this project's architecture
