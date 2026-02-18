@@ -33,6 +33,11 @@ class TestMetadata:
 
         return metadata_file_path
 
+    @pytest.fixture
+    def metadata(self) -> Metadata:
+        """Generate a Metadata() obj for tests"""
+        return Metadata()
+
     def test_import_metadata_from_file(self, metadata, metadata_file, sample_metadata):
         """Test metadata file import with valid data"""
 
@@ -115,12 +120,10 @@ class TestMetadata:
     def test_do_heuristic_analysis_multiple_years(self, metadata):
         """Test heuristic analysis with multiple years - should use the last one"""
 
-        # Need to match the name pattern first (ending in _, (, or [)
-        file_name = "Movie[1999]2020"
+        file_name = "Movie 1999 2020 Release"
         result = metadata.do_heuristic_analysis(file_name)
 
         assert result is True
-        # Should use the last year found
         assert metadata.release_year == 2020
 
     def test_do_heuristic_analysis_no_match(self, metadata):
