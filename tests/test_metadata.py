@@ -120,7 +120,7 @@ class TestMetadata:
     def test_do_heuristic_analysis_multiple_years(self, metadata):
         """Test heuristic analysis with multiple years - should use the last one"""
 
-        file_name = "Movie 1999 2020 Release"
+        file_name = "Movie_1999-2020-Release"
         result = metadata.do_heuristic_analysis(file_name)
 
         assert result is True
