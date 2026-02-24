@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"trivy.useIgnoreFile": true,
+		"trivy.secretScanning": true
+	}
+}
