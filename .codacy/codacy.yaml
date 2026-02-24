@@ -3,5 +3,5 @@ runtimes:
 tools:
     - lizard@1.17.31
     - pylint@3.3.9
-    - semgrep@1.78.0
+    - semgrep@1.16.1
     - trivy@0.69.1
