@@ -1,0 +1,42 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Run w/ Tmp Dirs",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "plexer_cli.main",
+            "args": [
+                "--source-dir", "/tmp/plexer-cli-test",
+                "--destination-dir", "/tmp/plexer-cli-test-dst",
+                "-vv"
+            ],
+            "justMyCode": true,
+        },
+        {
+            "name": "Dry Run w/ Tmp Dirs",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "plexer_cli.main",
+            "args": [
+                "--source-dir", "/tmp/plexer-cli-test",
+                "--destination-dir", "/tmp/plexer-cli-test-dst",
+                "--dry-run", "-vv"
+            ],
+            "justMyCode": true,
+        },
+        {
+            "name": "Dry Run w/ Tmp Dirs - Prompt All",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "plexer_cli.main",
+            "args": [
+                "--source-dir", "/tmp/plexer-cli-test",
+                "--destination-dir", "/tmp/plexer-cli-test-dst",
+                "--prompt=all", "--dry-run", "-vv"
+            ],
+            "justMyCode": true,
+        }
+    ]
+}

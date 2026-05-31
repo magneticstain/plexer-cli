@@ -11,7 +11,6 @@
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/magneticstain/plexer/total)
 
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/magneticstain/plexer/badge)](https://scorecard.dev/viewer/?uri=github.com/magneticstain/plexer)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/38b2a65ed9ac4c85afc98e259d73474f)](https://app.codacy.com/gh/magneticstain/plexer/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 [![Run Full Suite of Checks and Tests](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml)
 [![Release](https://github.com/magneticstain/plexer/actions/workflows/release.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/release.yml)
@@ -29,14 +28,12 @@ Currently, Plexer only supports organizing movies and other individual video fil
 ### Roadmap
 
 - [ ] Support for TV Shows ([#28](https://github.com/magneticstain/plexer/issues/28))
-- [ ] Docker implementations ([#29](https://github.com/magneticstain/plexer/issues/29))
+- [X] Docker implementations ([#29](https://github.com/magneticstain/plexer/issues/29))
 - [ ] MacOS support ([#30](https://github.com/magneticstain/plexer/issues/30))
 - [ ] Windows support ([#31](https://github.com/magneticstain/plexer/issues/31))
-- [ ] Metadata inference using file/directory info (i.e. analyze the video files to "guess" what the name, year, etc is) ([#32](https://github.com/magneticstain/plexer/issues/32))
+- [X] Metadata inference using file/directory info (i.e. analyze the video files to "guess" what the name, year, etc is) ([#32](https://github.com/magneticstain/plexer/issues/32))
 
 ## Install
-
-To install Plexer, there are a few options available.
 
 ### Docker
 
@@ -58,7 +55,7 @@ docker run --rm -it magneticstain/plexer-cli
 docker run --rm -it ghcr.io/magneticstain/plexer-cli
 ```
 
-#### Via Local Build
+#### Via Local Image Build
 
 In the case that container registries are unavailable, there's also the option to build the image locally. To do that, check out the `main` branch of this repo, build the Plexer image, and run it.
 
@@ -69,6 +66,14 @@ docker run --rm -it plexer_cli
 ```
 
 ## Requirements
+
+### Linux and MacOS Native Install
+
+If you've installed plexer-cli natively (i.e. outside of a Docker container) on Ubuntu, Devian, Fedora, etc, or MacOS, you will also need to install additional dependencies:
+
+#### Python-Magic
+
+While `python-magic` is imported in the standard fashion (via pip/python requirements), it itself depends on the presence of the libmagic C library. To install this library, follow [the installation instructions provided in the `python-magic` README](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation).
 
 ### Media Metadata
 
@@ -118,7 +123,6 @@ For developing with Plexer, there are several tools that are in use:
    1. [Hatch](https://hatch.pypa.io/1.12/)
 1. Analysis Tools:
    1. [Ruff](https://docs.astral.sh/ruff/)
-   1. [Codacy](https://app.codacy.com/gh/magneticstain/plexer/dashboard)
 1. Testing:
    1. [Pytest](https://docs.pytest.org/en/latest/)
    1. [Tox](https://tox.wiki/en/stable/)
