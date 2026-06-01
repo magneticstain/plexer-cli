@@ -1,6 +1,6 @@
 # PR Summary
 
-This is a summary.
+Include a general, high-level summary of what this PR presents.
 
 ## General Changes
 
