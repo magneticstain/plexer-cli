@@ -32,6 +32,19 @@ def fetch_cli_args() -> argparse.Namespace:
     parser.add_argument("-s", "--source-dir", action="store", required=True)
     parser.add_argument("-d", "--destination-dir", action="store", required=True)
 
+    parser.add_argument(
+        "--prompt",
+        choices=["all", "none", "default"],
+        default="default",
+        help="Behavior to take in regards to user prompts (e.g. correcting names for overwriting files). all = prompt user for every artifact; none = never prompt - just trust the heuristics; default = prompt for incomplete matches only",
+    )
+
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Perform a trial run with no changes made",
+    )
+
     return parser.parse_args()
 
 
@@ -40,7 +53,7 @@ def main():
 
     cli_args = fetch_cli_args()
 
-    logzero.logfile(None)
+    # logzero.logfile(None)
     if cli_args.verbose == 1:
         logzero.loglevel(logzero.INFO)
     elif cli_args.verbose >= 2:
@@ -50,6 +63,8 @@ def main():
 
     logger.info("starting Plexer")
     logger.debug("options: %s", cli_args)
+    if cli_args.dry_run:
+        logger.info("performing a dry run; NO CHANGES WILL BE MADE")
 
     fm = FileManager(src_dir=cli_args.source_dir, dst_dir=cli_args.destination_dir)
 
@@ -59,5 +74,13 @@ def main():
     logger.info("%d artifact(s) found in source directory", len(artifacts))
 
     logger.info("processing artifacts")
-    fm.process_directory(dir_artifacts=artifacts)
+    fm.process_directory(
+        dir_artifacts=artifacts,
+        prompt_behavior=cli_args.prompt,
+        dry_run=cli_args.dry_run,
+    )
     logger.info("artifact processing completed successfully")
+
+
+if __name__ == "__main__":
+    main()
