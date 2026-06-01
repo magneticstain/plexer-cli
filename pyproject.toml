@@ -63,5 +63,5 @@ path = "src/plexer_cli/main.py"
 [dependency-groups]
 dev = [
     "moviepy>=2.2.1",
-    "pytest>=9.0.2",
+    "pytest>=9.0.3",
 ]
