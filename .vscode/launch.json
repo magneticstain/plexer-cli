@@ -8,8 +8,8 @@
             "request": "launch",
             "module": "plexer_cli.main",
             "args": [
-                "--source-dir", "/tmp/plexer-cli-test",
-                "--destination-dir", "/tmp/plexer-cli-test-dst",
+                "--source-dir", "/tmp/plexer-e2e/plexer-cli-test",
+                "--destination-dir", "/tmp/plexer-e2e/plexer-cli-test-dst",
                 "-vv"
             ],
             "justMyCode": true,
@@ -20,8 +20,8 @@
             "request": "launch",
             "module": "plexer_cli.main",
             "args": [
-                "--source-dir", "/tmp/plexer-cli-test",
-                "--destination-dir", "/tmp/plexer-cli-test-dst",
+                "--source-dir", "/tmp/plexer-e2e/plexer-cli-test",
+                "--destination-dir", "/tmp/plexer-e2e/plexer-cli-test-dst",
                 "--dry-run", "-vv"
             ],
             "justMyCode": true,
@@ -32,8 +32,8 @@
             "request": "launch",
             "module": "plexer_cli.main",
             "args": [
-                "--source-dir", "/tmp/plexer-cli-test",
-                "--destination-dir", "/tmp/plexer-cli-test-dst",
+                "--source-dir", "/tmp/plexer-e2e/plexer-cli-test",
+                "--destination-dir", "/tmp/plexer-e2e/plexer-cli-test-dst",
                 "--prompt=all", "--dry-run", "-vv"
             ],
             "justMyCode": true,
