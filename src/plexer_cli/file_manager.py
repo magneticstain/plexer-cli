@@ -144,7 +144,7 @@ class FileManager:
     def process_directory(
         self,
         dir_artifacts: list,
-        video_metadata=Metadata(),
+        # video_metadata=Metadata(),
         prompt_behavior="default",
         dry_run=False,
     ) -> None:
@@ -174,17 +174,18 @@ class FileManager:
                     continue
 
                 # use heuristics to attempt to determine metadata from directory name
-                video_metadata_found = False
+                video_metadata = Metadata()
+                video_metadata.metadata_found = False
                 if video_metadata.do_heuristic_analysis(file_name=artifact.name):
                     logger.info(
                         "metadata found for directory via heuristics - name: %s, release_year: %d",
                         video_metadata.name,
                         video_metadata.release_year,
                     )
-                    video_metadata_found = True
+                    video_metadata.metadata_found = True
 
                 if prompt_behavior == "all" or (
-                    prompt_behavior == "default" and not video_metadata_found
+                    prompt_behavior == "default" and not video_metadata.metadata_found
                 ):
                     logger.info(
                         "no metadata found for directory via heuristics; prompting user for manual input"
@@ -206,7 +207,7 @@ class FileManager:
                     if new_dir_artifacts:
                         self.process_directory(
                             dir_artifacts=new_dir_artifacts,
-                            video_metadata=video_metadata,
+                            # video_metadata=video_metadata,
                             dry_run=dry_run,
                         )
                 else:
