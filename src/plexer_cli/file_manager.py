@@ -146,6 +146,7 @@ class FileManager:
         dir_artifacts: list,
         # video_metadata=Metadata(),
         prompt_behavior="default",
+        rename_files=False,
         dry_run=False,
     ) -> None:
         """
@@ -207,7 +208,6 @@ class FileManager:
                     if new_dir_artifacts:
                         self.process_directory(
                             dir_artifacts=new_dir_artifacts,
-                            # video_metadata=video_metadata,
                             dry_run=dry_run,
                         )
                 else:
