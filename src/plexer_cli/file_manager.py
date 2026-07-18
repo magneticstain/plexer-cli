@@ -146,6 +146,7 @@ class FileManager:
         dir_artifacts: list,
         # video_metadata=Metadata(),
         prompt_behavior="default",
+        rename_files=False,
         dry_run=False,
     ) -> None:
         """
@@ -192,7 +193,9 @@ class FileManager:
                     )
                     video_metadata.prompt_user_for_metadata()
 
-                if video_metadata.metadata_found:
+                if video_metadata.metadata_found and (
+                    artifact.mime_type != "directory" and rename_files
+                ):
                     logger.info("renaming artifact based on gathered metadata")
                     artifact = self.rename_artifact(
                         artifact=artifact,
@@ -207,7 +210,6 @@ class FileManager:
                     if new_dir_artifacts:
                         self.process_directory(
                             dir_artifacts=new_dir_artifacts,
-                            # video_metadata=video_metadata,
                             dry_run=dry_run,
                         )
                 else:

@@ -40,6 +40,13 @@ def fetch_cli_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--rename-files",
+        action="store_true",
+        default=False,
+        help="Toggle whether or not to rename the actual media files in the destination directory to match the source directory; if using Plex with subtitles, you may want to toggle this (default: False)",
+    )
+
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Perform a trial run with no changes made",
@@ -77,6 +84,7 @@ def main():
     fm.process_directory(
         dir_artifacts=artifacts,
         prompt_behavior=cli_args.prompt,
+        rename_files=cli_args.rename_files,
         dry_run=cli_args.dry_run,
     )
     logger.info("artifact processing completed successfully")
