@@ -40,10 +40,9 @@ def fetch_cli_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "--rename-files",
+        "--disable-file-rename",
         action="store_true",
-        default=False,
-        help="Toggle whether or not to rename the actual media files in the destination directory to match the source directory; if using Plex with subtitles, you may want to toggle this (default: False)",
+        help="Toggle to skip renaming the actual media files to match the parent directory; if using Plex with subtitles, you may want to toggle this as subtitles are searched based on filename",
     )
 
     parser.add_argument(
