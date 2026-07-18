@@ -83,7 +83,7 @@ def main():
     fm.process_directory(
         dir_artifacts=artifacts,
         prompt_behavior=cli_args.prompt,
-        rename_files=cli_args.rename_files,
+        rename_files=not cli_args.disable_file_rename,
         dry_run=cli_args.dry_run,
     )
     logger.info("artifact processing completed successfully")
