@@ -100,8 +100,7 @@ class TestMetadata:
         result = metadata.do_heuristic_analysis(file_name)
 
         assert result is True
-        # Regex captures minimally before first underscore, so just "The"
-        assert metadata.name == "The"
+        assert metadata.name == "The Matrix"
         assert metadata.release_year == 1999
         assert metadata.metadata_found is True
 
@@ -110,6 +109,18 @@ class TestMetadata:
 
         # Use format that matches the pattern (name followed by separator)
         file_name = "Movie Title [2015] 1080p BluRay.mkv"
+        result = metadata.do_heuristic_analysis(file_name)
+
+        assert result is True
+        assert metadata.name == "Movie Title"
+        assert metadata.release_year == 2015
+        assert metadata.metadata_found is True
+
+    def test_do_heuristic_analysis_period_delimited(self, metadata):
+        """Test heuristic analysis with period-delimited file naming convention"""
+
+        # Use format that matches the pattern (name followed by separator)
+        file_name = "Movie.Title.2015.1080p.BluRay.mkv"
         result = metadata.do_heuristic_analysis(file_name)
 
         assert result is True

@@ -9,6 +9,8 @@ import re
 from logzero import logger
 from prompt_toolkit import PromptSession
 
+from .const import ARTIFACT_HEURISTICS_PATTERNS
+
 
 class Metadata:
     """
@@ -18,10 +20,6 @@ class Metadata:
     name = ""
     release_year = 1900
     metadata_found = False
-    heuristics_patterns = {
-        "name": r"^(.+?)([\_\(\[])",  # anything before the first instance of commonly-used separators
-        "release_year": r"(19|20)([0-9]{2})",  # any 4 digit number between 1900 and 2099
-    }
 
     def __init__(self, name="", release_year=1900) -> None:
         self.name = name
@@ -76,12 +74,12 @@ class Metadata:
 
         # perform basic heuristics
         ## NAME
-        possible_name = re.search(self.heuristics_patterns["name"], file_name)
+        possible_name = re.search(ARTIFACT_HEURISTICS_PATTERNS["name"], file_name)
         if possible_name:
             self.name = self.scrub_artifact_name(possible_name.group(1))
         ## RELEASE YEAR
         possible_release_year = re.findall(
-            self.heuristics_patterns["release_year"], file_name
+            ARTIFACT_HEURISTICS_PATTERNS["release_year"], file_name
         )
         if possible_release_year:
             # if multiple years are found, take the last one since it's more likely to be the correct value

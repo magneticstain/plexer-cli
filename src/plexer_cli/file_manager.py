@@ -216,3 +216,4 @@ class FileManager:
                     )
             else:
                 logger.info("file artifact found, processing")
+                # TODO: implement file artifact processing (e.g., renaming, moving, etc.)
