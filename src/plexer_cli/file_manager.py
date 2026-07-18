@@ -193,9 +193,7 @@ class FileManager:
                     )
                     video_metadata.prompt_user_for_metadata()
 
-                if video_metadata.metadata_found and (
-                    artifact.mime_type != "directory" and rename_files
-                ):
+                if video_metadata.metadata_found:
                     logger.info("renaming artifact based on gathered metadata")
                     artifact = self.rename_artifact(
                         artifact=artifact,

@@ -217,6 +217,36 @@ class TestFileManager:
         # Verify the metadata file is still present
         assert os.path.exists(f"{preloaded_media_dir}/{METADATA_FILE_NAME}")
 
+    def test_process_file_disable_rename(self, file_mgr, preloaded_media_dir):
+        """Process the artifacts in preloaded media directory with file renaming disabled"""
+
+        pmd_artifacts = file_mgr.get_artifacts(tgt_dir=preloaded_media_dir)
+        prepped_pmd_artifacts = file_mgr.prep_artifacts(artifacts=pmd_artifacts)
+
+        # Get original file list
+        original_files = set(os.listdir(preloaded_media_dir))
+
+        # Process with file renaming disabled
+        file_mgr.process_directory(
+            dir_artifacts=prepped_pmd_artifacts,
+            prompt_behavior="none",
+            rename_files=False,
+            dry_run=False,
+        )
+
+        # Verify no files were modified, only directories
+        current_files = set(os.listdir(preloaded_media_dir))
+        assert original_files == current_files
+
+        # Next, test with file renaming enabled
+        # DEV NOTE: Disabled until file processing is implemented in process_directory()
+        # file_mgr.process_directory(
+        #     dir_artifacts=prepped_pmd_artifacts, prompt_behavior="none", rename_files=True, dry_run=False
+        # )
+
+        # current_files = set(os.listdir(preloaded_media_dir))
+        # assert original_files != current_files
+
     def test_process_directory_dry_run(self, file_mgr, preloaded_media_dir):
         """Process the artifacts in preloaded media directory in dry run mode"""
 
