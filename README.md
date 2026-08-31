@@ -11,7 +11,6 @@
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/magneticstain/plexer/total)
 
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/magneticstain/plexer-cli/badge)](https://scorecard.dev/viewer/?uri=github.com/magneticstain/plexer-cli)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13659/badge)](https://www.bestpractices.dev/projects/13659)
 
 [![Run Full Suite of Checks and Tests](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml)
 [![Release](https://github.com/magneticstain/plexer/actions/workflows/release.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/release.yml)
