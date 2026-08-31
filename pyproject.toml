@@ -62,6 +62,10 @@ path = "src/plexer_cli/main.py"
 
 [dependency-groups]
 dev = [
-    "moviepy>=2.2.1",
-    "pytest>=9.0.3",
+  "moviepy>=2.2.1",
+  "pytest>=9.0.3",
+]
+build = [
+  "pipx>=1.17.1",
+  "tox-gh>=1.2"
 ]
