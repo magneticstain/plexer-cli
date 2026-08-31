@@ -6,6 +6,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+
 jobs:
   release:
     name: Generate New Release - ${{ github.ref_name }}
