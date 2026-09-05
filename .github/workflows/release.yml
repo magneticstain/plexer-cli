@@ -36,7 +36,7 @@ jobs:
 
       # run tests
       - name: Install build deps
-        run: uv sync --group build
+        run: uv sync --group build --dev
 
       - name: Setup test suite
         run: tox -vv --notest -e test
