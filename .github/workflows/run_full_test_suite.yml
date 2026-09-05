@@ -46,7 +46,7 @@ jobs:
         run: uv sync --group build --dev
 
       - name: Setup test suite
-        run: tox -vv --notest -e test
+        run: uvx tox -vv --notest -e test
 
       - name: Run test suite
-        run: tox --skip-pkg-install -e test
+        run: uvx tox --skip-pkg-install -e test
