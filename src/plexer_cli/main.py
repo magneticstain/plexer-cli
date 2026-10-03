@@ -40,12 +40,6 @@ def fetch_cli_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "--disable-file-rename",
-        action="store_true",
-        help="Toggle to skip renaming the actual media files to match the parent directory; if using Plex with subtitles, you may want to toggle this as subtitles are searched based on filename",
-    )
-
-    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Perform a trial run with no changes made",
@@ -74,16 +68,15 @@ def main():
 
     fm = FileManager(src_dir=cli_args.source_dir, dst_dir=cli_args.destination_dir)
 
-    # get and prep artifacts for processing
+    # get and prep initial artifacts for processing
     logger.debug("prepping artifacts for processing")
     artifacts = fm.prep_artifacts(artifacts=fm.get_artifacts())
     logger.info("%d artifact(s) found in source directory", len(artifacts))
 
     logger.info("processing artifacts")
-    fm.process_directory(
-        dir_artifacts=artifacts,
+    fm.process_artifacts(
+        artifacts=artifacts,
         prompt_behavior=cli_args.prompt,
-        rename_files=not cli_args.disable_file_rename,
         dry_run=cli_args.dry_run,
     )
     logger.info("artifact processing completed successfully")
