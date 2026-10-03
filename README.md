@@ -82,16 +82,6 @@ The most important requirement before running plexer is to ensure that you've cr
 
 This is a JSON-formatted file that includes the movie metadata required by Plexer to perform its jobs.
 
-#### Plexer File Generator
-
-To easily create the `.plexer` file, you can use the one-liner below while in the movie's directory:
-
-```bash
-echo -n "Media Name: ";read MEDIA_NAME;echo -n "Release Year (YYYY): ";read RELEASE_YEAR;echo "{\"name\": \"${MEDIA_NAME}\", \"release_year\": \"${RELEASE_YEAR}\"}" > .plexer
-```
-
-It can be modified to support different types of media as well.
-
 ## Usage
 
 The source directory is the directory containing the raw media. The destination is where you'd like to save the processed media to.
@@ -127,3 +117,14 @@ For developing with Plexer, there are several tools that are in use:
 1. Testing:
    1. [Pytest](https://docs.pytest.org/en/latest/)
    1. [Tox](https://tox.wiki/en/stable/)
+
+### Coding Standards and Conventions
+
+- Pre-commit hooks are utilized and managed in `.pre-commit-config.yml`
+  - For example, `ruff` is run as part of every commit
+  - These pre-commit hooks **MUST** be installed and utilized by all developers
+
+#### Testing
+
+- All functions **MUST** have unit tests created for them
+- Tests are executed using **VS Code** with the `launch.json` config file in `.vscode`
