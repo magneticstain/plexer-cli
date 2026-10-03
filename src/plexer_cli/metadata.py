@@ -4,7 +4,6 @@ Plexer - Normalize media files for use with Plex Media Server
 Module: Metadata - code for analyzing and managing video metadata
 """
 
-import json
 import re
 from logzero import logger
 from prompt_toolkit import PromptSession
@@ -21,10 +20,11 @@ class Metadata:
     release_year = 1900
     metadata_found = False
 
-    def __init__(self, name="", release_year=1900) -> None:
+    def __init__(self, name="", release_year=1900, metadata_found=False) -> None:
         self.name = name
         if release_year >= 0:
             self.release_year = release_year
+        self.metadata_found = metadata_found
 
     def scrub_artifact_name(self, artifact_name: str) -> str:
         """
@@ -102,24 +102,5 @@ class Metadata:
         self.metadata_found = (
             False  # in case it has been overwritten from the default value
         )
+
         return False
-
-    def import_metadata_from_file(self, file_path: str) -> None:
-        """
-        Read in given file and process data into metadata values
-        """
-
-        logger.debug("metadata file found @ %s - importing data", file_path)
-
-        with open(file_path, mode="r", encoding="utf-8") as metadata_file:
-            imported_metadata = json.load(metadata_file)
-
-        logger.debug("data imported as: %s", imported_metadata)
-
-        try:
-            self.name = imported_metadata["name"]
-            self.release_year = imported_metadata["release_year"]
-        except KeyError as e:
-            logger.error(
-                'data missing in metadata file; "%s" field was not found', e.args[0]
-            )
