@@ -22,5 +22,3 @@ ARTIFACT_FILE_TYPE_WHITELIST = [
     # Metadata
     "text/x-nfo",  # .nfo
 ]
-
-METADATA_FILE_NAME = ".plexer"

@@ -8,7 +8,6 @@ import os
 import pytest
 from moviepy import ColorClip
 
-from plexer_cli.const import METADATA_FILE_NAME
 from plexer_cli.file_manager import FileManager
 from plexer_cli.artifact import Artifact
 from plexer_cli.metadata import Metadata
@@ -30,16 +29,12 @@ class TestFileManager:
         return vid_clip
 
     @pytest.fixture
-    def preloaded_media_dir(self, good_serialized_metadata, video_data, tmp_path):
+    def preloaded_media_dir(self, video_data, tmp_path):
         """Create a tmp directory containing all files needed for testing"""
 
-        # generate metadata file, invalid file, and video file
-        metadata_file = f"{tmp_path}/{METADATA_FILE_NAME}"
+        # generate test files
         invalid_file = f"{tmp_path}/invalid.txt"
         media_file = f"{tmp_path}/test.mp4"
-
-        with open(metadata_file, "w", encoding="utf-8") as mf:
-            mf.write(good_serialized_metadata)
 
         with open(invalid_file, "w", encoding="utf-8") as mf:
             mf.write(":()")
@@ -82,22 +77,6 @@ class TestFileManager:
 
         with pytest.raises(FileNotFoundError):
             file_mgr.get_artifacts(tgt_dir=tgt_dir)
-
-    def test_prep_artifacts(self, file_mgr, preloaded_media_dir):
-        """Test the prepping of artifacts using default/expected values"""
-
-        artifacts = file_mgr.get_artifacts(tgt_dir=preloaded_media_dir)
-        artifacts = file_mgr.prep_artifacts(artifacts=artifacts)
-
-        assert artifacts[0].name == ".plexer"
-
-    def test_prep_artifacts_empty_dir(self, file_mgr):
-        """Test the prepping of artifacts when no artifacts are found"""
-
-        orig_artifacts = []
-        prepped_artifacts = file_mgr.prep_artifacts(artifacts=orig_artifacts)
-
-        assert prepped_artifacts == orig_artifacts
 
     def test_check_artifact_valid_format(self, file_mgr):
         """Test artifact validation with valid Plex naming format"""
@@ -157,7 +136,7 @@ class TestFileManager:
 
         artifact = Artifact(name="oldname.txt", path=test_file, mime_type="text/plain")
 
-        metadata = Metadata(name="New Title", release_year=2021)
+        metadata = Metadata(name="New Title", release_year=2021, metadata_found=True)
         renamed_artifact = file_mgr.rename_artifact(artifact, metadata)
 
         # Check that artifact object was updated
@@ -175,7 +154,7 @@ class TestFileManager:
         original_path = test_file
         artifact = Artifact(name="oldname.txt", path=test_file, mime_type="text/plain")
 
-        metadata = Metadata(name="New Title", release_year=2021)
+        metadata = Metadata(name="New Title", release_year=2021, metadata_found=True)
         renamed_artifact = file_mgr.rename_artifact(artifact, metadata, dry_run=True)
 
         # In dry run mode, artifact object is NOT updated
@@ -196,77 +175,53 @@ class TestFileManager:
         )
 
         # Use metadata that will generate the same name as what we have
-        metadata = Metadata(name="oldname", release_year=1900)
+        metadata = Metadata(name="oldname", release_year=1900, metadata_found=True)
         file_mgr.rename_artifact(artifact, metadata)
 
         # File should not be renamed since src/dst are same
         assert os.path.exists(test_file)
 
-    def test_process_directory(self, file_mgr, preloaded_media_dir):
+    def test_process_artifacts(self, file_mgr, preloaded_media_dir):
         """Process the artifacts in preloaded media directory as is and confirm the results"""
 
         pmd_artifacts = file_mgr.get_artifacts(tgt_dir=preloaded_media_dir)
 
-        prepped_pmd_artifacts = file_mgr.prep_artifacts(artifacts=pmd_artifacts)
-
         # Should complete without raising an exception
-        file_mgr.process_directory(
-            dir_artifacts=prepped_pmd_artifacts, prompt_behavior="none"
-        )
-
-        # Verify the metadata file is still present
-        assert os.path.exists(f"{preloaded_media_dir}/{METADATA_FILE_NAME}")
-
-    def test_process_file_disable_rename(self, file_mgr, preloaded_media_dir):
-        """Process the artifacts in preloaded media directory with file renaming disabled"""
-
-        pmd_artifacts = file_mgr.get_artifacts(tgt_dir=preloaded_media_dir)
-        prepped_pmd_artifacts = file_mgr.prep_artifacts(artifacts=pmd_artifacts)
-
-        # Get original file list
-        original_files = set(os.listdir(preloaded_media_dir))
-
-        # Process with file renaming disabled
-        file_mgr.process_directory(
-            dir_artifacts=prepped_pmd_artifacts,
+        file_mgr.process_artifacts(
+            artifacts=pmd_artifacts,
+            video_metadata=Metadata(
+                name="New Title", release_year=2021, metadata_found=True
+            ),
             prompt_behavior="none",
-            rename_files=False,
-            dry_run=False,
         )
 
-        # Verify no files were modified, only directories
-        current_files = set(os.listdir(preloaded_media_dir))
-        assert original_files == current_files
+        # Verify the video file is still present
+        assert os.path.exists(f"{preloaded_media_dir}/New Title (2021).mp4")
 
-        # Next, test with file renaming enabled
-        # DEV NOTE: Disabled until file processing is implemented in process_directory()
-        # file_mgr.process_directory(
-        #     dir_artifacts=prepped_pmd_artifacts, prompt_behavior="none", rename_files=True, dry_run=False
-        # )
-
-        # current_files = set(os.listdir(preloaded_media_dir))
-        # assert original_files != current_files
-
-    def test_process_directory_dry_run(self, file_mgr, preloaded_media_dir):
+    def test_process_artifacts_dry_run(self, file_mgr, preloaded_media_dir):
         """Process the artifacts in preloaded media directory in dry run mode"""
 
         pmd_artifacts = file_mgr.get_artifacts(tgt_dir=preloaded_media_dir)
-        prepped_pmd_artifacts = file_mgr.prep_artifacts(artifacts=pmd_artifacts)
 
         # Get original file list
         original_files = set(os.listdir(preloaded_media_dir))
 
         # Process in dry run mode
-        file_mgr.process_directory(
-            dir_artifacts=prepped_pmd_artifacts, prompt_behavior="none", dry_run=True
+        file_mgr.process_artifacts(
+            artifacts=pmd_artifacts,
+            video_metadata=Metadata(
+                name="New Title", release_year=2021, metadata_found=True
+            ),
+            prompt_behavior="none",
+            dry_run=True,
         )
 
         # Verify no files were modified
         current_files = set(os.listdir(preloaded_media_dir))
         assert original_files == current_files
 
-    def test_process_directory_empty_dir(self, file_mgr):
+    def test_process_artifacts_empty_dir(self, file_mgr):
         """Process the artifacts of empty dir"""
 
         # Should complete without raising an exception
-        file_mgr.process_directory(dir_artifacts=[])
+        file_mgr.process_artifacts(artifacts=[])

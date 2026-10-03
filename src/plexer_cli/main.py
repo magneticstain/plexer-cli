@@ -68,14 +68,9 @@ def main():
 
     fm = FileManager(src_dir=cli_args.source_dir, dst_dir=cli_args.destination_dir)
 
-    # get and prep initial artifacts for processing
-    logger.debug("prepping artifacts for processing")
-    artifacts = fm.prep_artifacts(artifacts=fm.get_artifacts())
-    logger.info("%d artifact(s) found in source directory", len(artifacts))
-
     logger.info("processing artifacts")
     fm.process_artifacts(
-        artifacts=artifacts,
+        artifacts=fm.get_artifacts(),
         prompt_behavior=cli_args.prompt,
         dry_run=cli_args.dry_run,
     )

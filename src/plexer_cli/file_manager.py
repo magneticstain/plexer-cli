@@ -12,7 +12,7 @@ from magic import from_file
 from logzero import logger
 
 from .artifact import Artifact
-from .const import ARTIFACT_NAME_REGEX, METADATA_FILE_NAME, ARTIFACT_FILE_TYPE_WHITELIST
+from .const import ARTIFACT_NAME_REGEX, ARTIFACT_FILE_TYPE_WHITELIST
 from .metadata import Metadata
 
 
@@ -52,24 +52,6 @@ class FileManager:
                         mime_type=artifact_mime_type,
                     )
                 )
-
-        return artifacts
-
-    def prep_artifacts(self, artifacts: list) -> list:
-        """
-        Perform any processing needed to prepare the artifact data for further processing
-
-        Right now, this includes:
-            * Properly ordering artifacts such that the metadata file is first
-        """
-
-        for idx, artifact in enumerate(artifacts):
-            if artifact.name == METADATA_FILE_NAME:
-                # float it to the top of the artifact set
-                artifacts.pop(idx)
-                artifacts.insert(0, artifact)
-
-                break
 
         return artifacts
 
