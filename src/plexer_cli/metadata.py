@@ -104,7 +104,7 @@ class Metadata:
                 "".join(possible_release_year[-1])
             )  # Ex: [('19', '99'), ('20', '20')] -> ('20', '20') -> 2020
 
-        if possible_name and possible_edition and possible_release_year:
+        if possible_name and possible_release_year:
             logger.debug(
                 "heuristic analysis results - name: %s, edition: %s, release_year: %d",
                 self.name,
