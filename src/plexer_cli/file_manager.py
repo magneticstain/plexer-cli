@@ -86,6 +86,9 @@ class FileManager:
 
         new_artifact_name = f"{video_metadata.name} ({video_metadata.release_year})"
 
+        if video_metadata.edition:
+            new_artifact_name += f" {{edition-{video_metadata.edition}}}"
+
         # get artifact file info for srrc/dst path generation
         artifact_file_path = Path(artifact.absolute_path)
         artifact_parent_dir = artifact_file_path.parent
