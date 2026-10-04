@@ -86,6 +86,13 @@ class Metadata:
         possible_name = re.search(ARTIFACT_HEURISTICS_PATTERNS["name"], file_name)
         if possible_name:
             self.name = self.scrub_artifact_name(possible_name.group(1))
+        ## EDITION
+        possible_edition = re.search(ARTIFACT_HEURISTICS_PATTERNS["edition"], file_name)
+        if possible_edition:
+            if possible_edition.group(1):
+                self.edition = self.scrub_artifact_name(possible_edition.group(1))
+            elif possible_edition.group(2):
+                self.edition = self.scrub_artifact_name(possible_edition.group(2))
         ## RELEASE YEAR
         possible_release_year = re.findall(
             ARTIFACT_HEURISTICS_PATTERNS["release_year"], file_name
@@ -97,10 +104,11 @@ class Metadata:
                 "".join(possible_release_year[-1])
             )  # Ex: [('19', '99'), ('20', '20')] -> ('20', '20') -> 2020
 
-        if possible_name and possible_release_year:
+        if possible_name and possible_edition and possible_release_year:
             logger.debug(
-                "heuristic analysis results - name: %s, release_year: %d",
+                "heuristic analysis results - name: %s, edition: %s, release_year: %d",
                 self.name,
+                self.edition,
                 self.release_year,
             )
 
