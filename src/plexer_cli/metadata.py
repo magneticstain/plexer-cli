@@ -17,11 +17,15 @@ class Metadata:
     """
 
     name = ""
+    edition = ""
     release_year = 1900
     metadata_found = False
 
-    def __init__(self, name="", release_year=1900, metadata_found=False) -> None:
+    def __init__(
+        self, name="", edition="", release_year=1900, metadata_found=False
+    ) -> None:
         self.name = name
+        self.edition = edition
         if release_year >= 0:
             self.release_year = release_year
         self.metadata_found = metadata_found
@@ -54,6 +58,10 @@ class Metadata:
         user_name = prompt_sess.prompt(
             "Enter the correct name for this media: ", default=self.name
         )
+        user_edition = prompt_sess.prompt(
+            "Enter the correct edition for this media (optional): ",
+            default=self.edition,
+        )
         user_release_year = prompt_sess.prompt(
             "Enter the release year for this media: ",
             default=str(
@@ -62,6 +70,7 @@ class Metadata:
         )
 
         self.name = user_name
+        self.edition = user_edition
         self.release_year = int(user_release_year)
         self.metadata_found = True
 
