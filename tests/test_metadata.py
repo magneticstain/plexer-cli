@@ -21,11 +21,15 @@ class TestMetadata:
         """Test Metadata object initialization with custom values"""
 
         custom_name = "Custom Title"
+        custom_edition = "Director's Cut"
         custom_year = 2020
 
-        metadata = Metadata(name=custom_name, release_year=custom_year)
+        metadata = Metadata(
+            name=custom_name, edition=custom_edition, release_year=custom_year
+        )
 
         assert metadata.name == custom_name
+        assert metadata.edition == custom_edition
         assert metadata.release_year == custom_year
 
     def test_metadata_initialization_negative_year(self):
@@ -125,3 +129,27 @@ class TestMetadata:
         # Should fail because both name and year are required
         assert result is False
         assert metadata.metadata_found is False
+
+    def test_do_heuristic_analysis_edition_common(self, metadata):
+        """Test heuristic analysis for common edition names"""
+
+        file_name = "Movie.Title.2015.1080p.BluRay.Directors.Cut.Edition.mkv"
+        result = metadata.do_heuristic_analysis(file_name)
+
+        assert result is True
+        assert metadata.name == "Movie Title"
+        assert metadata.edition == "Directors Cut"
+        assert metadata.release_year == 2015
+        assert metadata.metadata_found is True
+
+    def test_do_heuristic_analysis_edition_generic(self, metadata):
+        """Test heuristic analysis for more generic edition names"""
+
+        file_name = "Movie.Title.2015.1080p.BluRay.SuperDuper.Edition.mkv"
+        result = metadata.do_heuristic_analysis(file_name)
+
+        assert result is True
+        assert metadata.name == "Movie Title"
+        assert metadata.edition == "SuperDuper"
+        assert metadata.release_year == 2015
+        assert metadata.metadata_found is True
