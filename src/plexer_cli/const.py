@@ -7,6 +7,8 @@ Module: Const - collection of global variables used across the application
 ARTIFACT_NAME_REGEX = r"^(.+) (\([\d]{4}\)) ?(\{edition-.+\})?$"
 ARTIFACT_HEURISTICS_PATTERNS = {
     "name": r"^(.+?)([\.\-\_\(\[][1|2])",  # anything before the first instance of commonly-used separators
+    "common_editions": r"(?:[Dd]irector(?:')?s|[Ff]inal|[Ee]xtended|[Tt]heatrical|[Uu]nrated)[\.\-\_ ](?:Cut|Edit)|Uncut",  # common multi-word edition names (e.g., "Directors Cut", "Theatrical Edit", etc.)
+    "edition": r"([A-Za-z0-9']+)([\.\-\_ ]{1})([Ee][Dd][Ii][Tt][Ii][Oo][Nn])|(?:{edition-)(.+)(?:})",  # "XXX edition" (case-insensitive) or standard Plex format
     "release_year": r"(19|20)([0-9]{2})",  # any 4 digit number between 1900 and 2099
 }
 ARTIFACT_FILE_TYPE_WHITELIST = [
