@@ -23,7 +23,7 @@ RUN hatch build
 ########################
 
 # Google distroless Python 3.13 Alpine image
-FROM gcr.io/distroless/python3-debian13:nonroot-arm64@sha256:92f92e538766c4550670d0a0909068d8f7968286e183157de67d8068cd147dcc
+FROM gcr.io/distroless/python3-debian13:nonroot-arm64@sha256:f7a5fde15cf1e287dffac51d5d683e06dc6d4e5f63dde693fc8a4e54ac47cbcd
 
 RUN apk update && \
     apk add --no-cache libmagic
