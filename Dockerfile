@@ -4,6 +4,8 @@ FROM ghcr.io/astral-sh/uv:alpine3.23@sha256:7d1ef166503c3c123a51f17d4eeb4dc748c3
 
 WORKDIR /build
 
+COPY . .
+
 # we are unable to use the --require-hashes option as there is no local file defining the hashes
 # this is what pip uses for comparison by default.
 # However, it can compare the hash against PyPI's hash.
@@ -14,8 +16,6 @@ RUN uv sync --group build
 # https://pipx.pypa.io/latest/how-to/pin-packages.html
 RUN pipx install hatch==1.13.0 && pipx pin hatch
 
-COPY . .
-
 ENV PATH="$PATH:/root/.local/bin"
 
 RUN hatch build
@@ -23,7 +23,7 @@ RUN hatch build
 ########################
 
 # Google distroless Python 3.13 Alpine image
-FROM gcr.io/distroless/python3-debian13:nonroot-arm64@sha256:f7a5fde15cf1e287dffac51d5d683e06dc6d4e5f63dde693fc8a4e54ac47cbcd
+FROM gcr.io/distroless/python3-debian13:nonroot-amd64@sha256:2edaba4309e9b3cad2d297e334714ce67d549f2d2ed999fec198d049cbaa2d14
 
 RUN apk update && \
     apk add --no-cache libmagic
