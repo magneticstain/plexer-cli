@@ -97,7 +97,7 @@ jobs:
         uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051  # v5.10.0
         with:
           images: |
-            magneticstain/plexer-cli
+            magneticstain/${{ github.repository }}
             ghcr.io/${{ github.repository }}
 
       - name: Build and push Docker images to all registries
@@ -106,6 +106,8 @@ jobs:
         with:
           context: .
           push: true
+          provenance: mode=max
+          sbom: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
