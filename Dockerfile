@@ -4,40 +4,31 @@ FROM ghcr.io/astral-sh/uv:alpine3.23@sha256:7d1ef166503c3c123a51f17d4eeb4dc748c3
 
 WORKDIR /build
 
-COPY . .
+COPY pyproject.toml uv.lock README.md LICENSE /build/
+RUN mkdir -p /build/src
+COPY src/ /build/src/
 
-# we are unable to use the --require-hashes option as there is no local file defining the hashes
-# this is what pip uses for comparison by default.
-# However, it can compare the hash against PyPI's hash.
-# Since PyPI sends requests over TLS, this should be secure enough for our threat model.
-# https://pypi.org/project/pipx/
-# RUN pip install pipx==1.7.1 --hash=sha256:a575ced25c507c1b1c978269f5684b5b291e81e3cd14eb3cee196a3c5b304732
 RUN uv sync --group build
+
+RUN apk update && \
+    apk add --no-cache libmagic pipx
+
 # https://pipx.pypa.io/latest/how-to/pin-packages.html
-RUN pipx install hatch==1.13.0 && pipx pin hatch
-
-ENV PATH="$PATH:/root/.local/bin"
-
-RUN hatch build
+RUN pipx install hatch==1.18.1 && pipx pin hatch
+RUN PATH="$PATH:/root/.local/bin" hatch build
 
 ########################
 
-# Google distroless Python 3.13 Alpine image
-FROM gcr.io/distroless/python3-debian13:nonroot-amd64@sha256:2edaba4309e9b3cad2d297e334714ce67d549f2d2ed999fec198d049cbaa2d14
-
-RUN apk update && \
-    apk add --no-cache libmagic
+FROM python:3.14-alpine3.23@sha256:e7cff362a12454395f8dc99607c21a602ea880cdce03538877b90c2ba932b16f
 
 RUN addgroup --system --gid 1001 plexer && \
     adduser --system --uid 1001 --ingroup plexer plexer
 
-WORKDIR /app
-
-COPY --chown=plexer:plexer --from=build /build/dist/ ./dist/
+COPY --chown=plexer:plexer --from=build /build/dist/ /app/dist/
 
 RUN python -m venv /app/venv
 ENV PATH="/app/venv/bin:$PATH"
-RUN pip install ./dist/plexer_cli-*.whl
+RUN pip install /app/dist/plexer_cli-*.whl
 
 USER plexer
 
