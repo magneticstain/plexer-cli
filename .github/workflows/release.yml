@@ -46,17 +46,12 @@ jobs:
           enable-cache: true
 
       - name: Setup python for build
-        run: uv python install
+        run: |
+          uv python install
+          uv sync --group build --dev
 
-      # run tests
-      - name: Install build deps
-        run: uv sync --group build --dev
-
-      - name: Setup test suite
-        run: uvx tox -vv --notest -e test
-
-      - name: Run test suite
-        run: uvx tox --skip-pkg-install -e test
+      - name: Setup and run test suite
+        run: uvx tox -vv -e test
       
       # build and publish
       - name: Install Hatch
