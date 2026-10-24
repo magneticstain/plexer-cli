@@ -1,12 +1,29 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: forbid-submodules
+      - id: mixed-line-ending
+      - id: name-tests-test
+        args: [ --pytest-test-first ]
+      - id: trailing-whitespace
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.1
+    rev: v0.17.2
     hooks:
       - id: ruff-format
       - id: ruff-check
         args: [ --fix ]
+
   # REF: https://docs.astral.sh/uv/guides/integration/pre-commit/
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.2
+    rev: 0.13.5
     hooks:
       - id: uv-lock
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint

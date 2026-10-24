@@ -6,15 +6,16 @@ Main App Entrypoint
 """
 
 __author__ = "magneticstain"
-__version__ = "0.1.15"
+__version__ = "0.1.16"
 __license__ = "MIT"
 
 import argparse
+
 import logzero
 from logzero import logger
+
 # yes, docs suggest importing it twice:
 # https://logzero.readthedocs.io/en/latest/#advanced-usage-examples
-
 from plexer_cli.file_manager import FileManager
 
 
