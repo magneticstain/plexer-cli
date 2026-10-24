@@ -170,5 +170,4 @@ jobs:
         with:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ steps.push.outputs.digest }}
-          sbom-path: "sbom.spdx.json"  # REF: https://docs.docker.com/build/metadata/attestations/sbom/#verify-sbom-attestations
           push-to-registry: true
