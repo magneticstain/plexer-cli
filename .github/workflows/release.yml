@@ -22,6 +22,7 @@ jobs:
     environment: release
 
     permissions:
+      artifact-metadata: write  # needed to push SBOM and provenance attestation (GHCR)
       attestations: write
       contents: write  # needed to create GH Release
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing to PyPI
