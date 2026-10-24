@@ -59,6 +59,7 @@ jobs:
   push_pypi:
     name: Push to PyPI - ${{ github.ref_name }}
     runs-on: ubuntu-latest
+    needs: build_project
     environment: release
 
     permissions:
@@ -98,6 +99,7 @@ jobs:
   build_and_push_container:
     name: Build and Push Container - ${{ github.ref_name }}
     runs-on: ubuntu-latest
+    needs: build_project
     environment: release
 
     permissions:
