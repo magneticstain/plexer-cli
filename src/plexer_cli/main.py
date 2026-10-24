@@ -6,7 +6,7 @@ Main App Entrypoint
 """
 
 __author__ = "magneticstain"
-__version__ = "0.1.14"
+__version__ = "0.1.15"
 __license__ = "MIT"
 
 import argparse
