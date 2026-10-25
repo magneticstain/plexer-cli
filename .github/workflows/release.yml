@@ -182,7 +182,7 @@ jobs:
           cosign sign --yes ${IMAGES}
 
           cosign verify ${IMAGES} \
-            --certificate-identity=https://github.com/${{ github.workflow_ref }} \
+            --certificate-identity=https://github.com/${{ github.repository }}/.github/workflows/release.yml@refs/tags/${{ github.ref_name }} \
             --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 
       - name: Generate artifact attestation for container images
