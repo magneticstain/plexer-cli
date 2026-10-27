@@ -39,21 +39,58 @@ class FileManager:
         tgt_dir = tgt_dir if tgt_dir else self.src_dir
 
         with os.scandir(tgt_dir) as sd_iter:
-            for dir_artifact in sd_iter:
-                try:
-                    artifact_mime_type = from_file(dir_artifact.path, mime=True)
-                except IsADirectoryError:
-                    artifact_mime_type = "directory"
+            for entry in sd_iter:
+                if entry.is_symlink():
+                    logger.info(
+                        "skipping symlink for security purposes: %s", entry.path
+                    )
+                    continue
+                elif entry.is_dir(follow_symlinks=False):
+                    mime_type = "directory"
+                elif entry.is_file(follow_symlinks=False):
+                    try:
+                        mime_type = from_file(entry.path, mime=True)
+                    except OSError as e:
+                        logger.error("cannot read artifact %s: %s", entry.path, e)
+                        continue
+                else:
+                    continue  # fifo, socket, device, etc
 
                 artifacts.append(
                     Artifact(
-                        name=dir_artifact.name,
-                        path=dir_artifact.path,
-                        mime_type=artifact_mime_type,
+                        name=entry.name,
+                        path=entry.path,
+                        mime_type=mime_type,
                     )
                 )
 
         return artifacts
+
+    def is_within_src_dir(self, path) -> bool:
+        """
+        Check if the filesystem location affected by an operation on the given path is inside the source directory
+
+        Only the parent directory is resolved, since renames and deletes act on a symlink itself, not its target.
+
+        This is a security measure to prevent deletion of files outside of the source directory. See GHSA-6hrq-p4m3-h6rf.
+        """
+
+        tgt_path = Path(path)
+
+        # automatically reject recursive paths
+        if tgt_path.name in ("", ".", ".."):
+            return False
+
+        # resolve parent directory of the target path and check if within the source directory
+        try:
+            affected_path = tgt_path.parent.resolve() / tgt_path.name
+        except (OSError, RuntimeError):
+            # fail closed if the path can't be resolved (e.g. symlink loops)
+            return False
+
+        src_dir = Path(self.src_dir).resolve()
+
+        return src_dir in affected_path.parents
 
     def check_artifact(self, artifact: Artifact) -> bool:
         """
@@ -102,6 +139,16 @@ class FileManager:
         logger.debug(
             f"renaming artifact: [ OLD PATH: {src_file} ] to [ NEW PATH: {dst_file} ]"
         )
+
+        if not (self.is_within_src_dir(src_file) and self.is_within_src_dir(dst_file)):
+            logger.error(
+                "refusing to rename artifact outside of source directory (%s): %s -> %s",
+                self.src_dir,
+                src_file,
+                dst_file,
+            )
+
+            return artifact
 
         if src_file != dst_file:
             logger.debug(
@@ -221,6 +268,15 @@ class FileManager:
 
                 # delete any files with file-types not whitelisted; rename whitelisted files accordingly
                 if artifact.mime_type not in ARTIFACT_FILE_TYPE_WHITELIST:
+                    if not self.is_within_src_dir(artifact.absolute_path):
+                        logger.error(
+                            "refusing to delete artifact outside of source directory (%s): %s",
+                            self.src_dir,
+                            artifact.absolute_path,
+                        )
+
+                        continue
+
                     logger.warning(
                         f"file artifact is not a whitelisted file type; deleting: {artifact.name}"
                     )
