@@ -1,7 +1,7 @@
 # Plexer
 
 <!-- reenable once issue #27 is complete -->
-<!-- ![GitHub Release](https://img.shields.io/github/v/release/magneticstain/plexer?include_prereleases) -->
+![GitHub Release](https://img.shields.io/github/v/release/magneticstain/plexer?include_prereleases)
 [![PyPI - Version](https://img.shields.io/pypi/v/plexer_cli)](https://pypi.org/project/plexer-cli/)
 
 ![GitHub License](https://img.shields.io/github/license/magneticstain/plexer)
@@ -14,7 +14,7 @@
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13659/badge)](https://www.bestpractices.dev/projects/13659)
 
 [![Run Full Suite of Checks and Tests](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/run_full_test_suite.yml)
-[![Release](https://github.com/magneticstain/plexer/actions/workflows/release.yml/badge.svg)](https://github.com/magneticstain/plexer/actions/workflows/release.yml)
+[![Release](https://github.com/magneticstain/plexer-cli/actions/workflows/release.yml/badge.svg?event=push)](https://github.com/magneticstain/plexer-cli/actions/workflows/release.yml)
 
 ## Summary
 
