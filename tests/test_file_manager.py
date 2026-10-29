@@ -2,17 +2,18 @@
 Plexer Unit Tests - File_Manager.py
 """
 
-from os import mkdir
 import os
 import shutil
 import threading
+from os import mkdir
 from pathlib import Path
 
 import pytest
 from moviepy import ColorClip
 
-from plexer_cli.file_manager import FileManager
 from plexer_cli.artifact import Artifact
+from plexer_cli.const import ARTIFACT_FILE_EXTENSION_WHITELIST
+from plexer_cli.file_manager import FileManager
 from plexer_cli.metadata import Metadata
 
 BOOTSTRAP_DIR = Path(__file__).parent / "bootstrap"
@@ -553,3 +554,94 @@ class TestFileManager:
         )
 
         assert snapshot_dir(outside_dir) == original_outside
+
+    ###
+    # File type whitelist - regression tests for #176
+    ###
+
+    @pytest.mark.parametrize("file_ext", sorted(ARTIFACT_FILE_EXTENSION_WHITELIST))
+    def test_is_whitelisted_artifact_extension(self, file_mgr, file_ext):
+        """Test that files with a whitelisted extension are kept, regardless of their detected MIME type"""
+
+        artifact = Artifact(
+            name=f"movie{file_ext}",
+            path=f"/tmp/movie{file_ext}",
+            mime_type="application/octet-stream",
+        )
+
+        assert file_mgr.is_whitelisted_artifact(artifact) is True
+
+    def test_is_whitelisted_artifact_extension_case_insensitive(self, file_mgr):
+        """Test that file extensions are matched case-insensitively"""
+
+        artifact = Artifact(
+            name="MOVIE.SRT", path="/tmp/MOVIE.SRT", mime_type="text/plain"
+        )
+
+        assert file_mgr.is_whitelisted_artifact(artifact) is True
+
+    def test_is_whitelisted_artifact_video_mime_type(self, file_mgr):
+        """Test that files detected as video are kept even with an unrecognized extension"""
+
+        artifact = Artifact(
+            name="movie.mkv.part", path="/tmp/movie.mkv.part", mime_type="video/mp4"
+        )
+
+        assert file_mgr.is_whitelisted_artifact(artifact) is True
+
+    @pytest.mark.parametrize(
+        "file_name, mime_type",
+        [
+            ("notes.txt", "text/plain"),
+            ("cover.jpg", "image/jpeg"),
+            (".DS_Store", "application/octet-stream"),
+            (".srt", "application/x-subrip"),  # dotfile with no extension
+            ("movie.srt.txt", "text/plain"),
+            ("download.part", "application/octet-stream"),
+            ("RARBG.com.url", "text/plain"),
+        ],
+    )
+    def test_is_whitelisted_artifact_not_whitelisted(
+        self, file_mgr, file_name, mime_type
+    ):
+        """Test that non-media files are not kept, including generic text and binary files"""
+
+        artifact = Artifact(
+            name=file_name, path=f"/tmp/{file_name}", mime_type=mime_type
+        )
+
+        assert file_mgr.is_whitelisted_artifact(artifact) is False
+
+    def test_process_artifacts_keeps_subtitles_and_metadata(self, file_mgr):
+        """Test that video, subtitle, and metadata files survive processing and are renamed, while other files are deleted"""
+
+        media_dir = f"{file_mgr.src_dir}/Movie.2019.1080p"
+        mkdir(media_dir)
+
+        shutil.copy(BOOTSTRAP_DIR / "blank.mp4", f"{media_dir}/movie.avi")
+        shutil.copy(BOOTSTRAP_DIR / "blank.mkv", f"{media_dir}/movie.mkv.part")
+        with open(f"{media_dir}/movie.srt", "w", encoding="utf-8") as f:
+            f.write("1\n00:00:01,000 --> 00:00:02,000\nHello\n")
+        with open(f"{media_dir}/movie.idx", "w", encoding="utf-8") as f:
+            f.write("# VobSub index file, v7 (do not modify this line!)\n")
+        with open(f"{media_dir}/movie.sub", "wb") as f:
+            f.write(b"\x00\x00\x01\xba" + bytes(60))
+        with open(f"{media_dir}/movie.nfo", "w", encoding="utf-8") as f:
+            f.write("Movie (2019)\n")
+        with open(f"{media_dir}/junk.txt", "w", encoding="utf-8") as f:
+            f.write("downloaded from somewhere")
+        with open(f"{media_dir}/cover.jpg", "w", encoding="utf-8") as f:
+            f.write("not really a photo")
+
+        file_mgr.process_artifacts(
+            artifacts=file_mgr.get_artifacts(), prompt_behavior="none"
+        )
+
+        assert set(os.listdir(f"{file_mgr.src_dir}/Movie (2019)")) == {
+            "Movie (2019).avi",
+            "Movie (2019).part",
+            "Movie (2019).srt",
+            "Movie (2019).idx",
+            "Movie (2019).sub",
+            "Movie (2019).nfo",
+        }
