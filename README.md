@@ -32,8 +32,8 @@ Plexer expects the source directory to contain **one subdirectory per movie**. F
 1. Infers the movie's name, release year, and edition (e.g. `Director's Cut`, `Extended Edition`) from the directory name using heuristics
 1. Prompts you for any metadata it couldn't infer (see [`--prompt`](#prompt-behavior))
 1. Renames the directory to the Plex format, e.g. `The.Black.Phone.2021.1080p.WEBRip.x265-RARBG` → `The Black Phone (2021)`
-1. Renames each video file inside it to match, e.g. `Blade Runner (1982) {edition-Final Cut}.mkv`
-1. **Deletes** any file in the directory that isn't a supported file type (samples, `.txt` files, images, etc.)
+1. Renames each video, subtitle, and `.nfo` file inside it to match, e.g. `Blade Runner (1982) {edition-Final Cut}.mkv`
+1. **Deletes** any file in the directory that isn't a [supported file type](#supported-file-types) (`.txt` files, images, `.DS_Store`, etc.)
 
 Files that are already in the correct format are left alone. Symlinks are skipped, and Plexer refuses to rename or delete anything outside of the source directory.
 
@@ -106,7 +106,7 @@ If you've installed Plexer natively (i.e. outside of a Docker container) on Ubun
 
 #### Python-Magic
 
-Plexer uses `python-magic` to detect file types. It's installed automatically as a Python dependency, but it depends on the libmagic C library, which isn't. To install this library, follow [the installation instructions provided in the `python-magic` README](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation). For example:
+Plexer uses `python-magic` to detect video files that don't have a recognized file extension. It's installed automatically as a Python dependency, but it depends on the libmagic C library, which isn't. To install this library, follow [the installation instructions provided in the `python-magic` README](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation). For example:
 
 ```bash
 # Debian/Ubuntu
@@ -172,10 +172,16 @@ By default, only warnings and errors are printed. Use `-v` for informational out
 
 Plexer keeps and renames the following file types; anything else inside a movie directory is deleted:
 
-- MP4 video (`video/mp4`)
-- Matroska video (`.mkv`, `video/x-matroska`)
+| Type      | File extensions                                                                          |
+| --------- | ---------------------------------------------------------------------------------------- |
+| Video     | `.avi`, `.m2ts`, `.m4v`, `.mkv`, `.mov`, `.mp4`, `.mpeg`, `.mpg`, `.ts`, `.webm`, `.wmv` |
+| Subtitles | `.ass`, `.idx`, `.smi`, `.srt`, `.ssa`, `.sub`, `.vtt`                                   |
+| Metadata  | `.nfo`                                                                                   |
 
-File types are detected from file contents using libmagic, not from the file extension.
+File types are matched by file extension (case-insensitive). As a fallback, any other file that libmagic detects as video (a `video/*` MIME type) is also kept, so videos with unusual extensions aren't deleted.
+
+> [!NOTE]
+> [BUG] Each kept file is renamed to the movie's name plus its original extension, e.g. `movie.en.srt` → `Blade Runner (1982).srt`. If a directory contains several files with the same extension (e.g. multiple subtitle languages, or a sample video), they are renamed to the same name and only one is kept. See [#177](https://github.com/magneticstain/plexer-cli/issues/177).
 
 ## Support & Feedback
 

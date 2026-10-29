@@ -6,13 +6,17 @@ Module: File Manager - code for file-related ops
 
 import os
 import re
-
 from pathlib import Path
-from magic import from_file
+
 from logzero import logger
+from magic import from_file
 
 from .artifact import Artifact
-from .const import ARTIFACT_NAME_REGEX, ARTIFACT_FILE_TYPE_WHITELIST
+from .const import (
+    ARTIFACT_FILE_EXTENSION_WHITELIST,
+    ARTIFACT_NAME_REGEX,
+    ARTIFACT_VIDEO_MIME_TYPE_PREFIX,
+)
 from .metadata import Metadata
 
 
@@ -112,6 +116,25 @@ class FileManager:
 
         return valid_artifact
 
+    def is_whitelisted_artifact(self, artifact: Artifact) -> bool:
+        """
+        Check if the given file artifact is a type that should be kept (and renamed) instead of deleted
+
+        The file extension is checked first, since libmagic can't reliably identify subtitle and metadata files
+        (e.g. .srt, .sub, and .nfo files are often detected as text/plain or application/octet-stream). Files with
+        an unrecognized extension are still kept if libmagic detects them as a `video/*` MIME type.
+
+        Check is case-insensitive, and the leading period is required for file extensions.
+        """
+
+        artifact_file_ext = Path(artifact.name).suffix.lower()
+
+        if artifact_file_ext in ARTIFACT_FILE_EXTENSION_WHITELIST:
+            return True
+        else:
+            # try fallback
+            return artifact.mime_type.startswith(ARTIFACT_VIDEO_MIME_TYPE_PREFIX)
+
     def rename_artifact(
         self, artifact: Artifact, video_metadata: Metadata, dry_run=False
     ) -> Artifact:
@@ -199,7 +222,7 @@ class FileManager:
     def process_artifacts(
         self,
         artifacts: list,
-        video_metadata=Metadata(),
+        video_metadata: Metadata | None = None,
         prompt_behavior="default",
         dry_run=False,
     ) -> None:
@@ -208,6 +231,9 @@ class FileManager:
 
         Subdirectories are processed recursively.
         """
+
+        if video_metadata is None:
+            video_metadata = Metadata()
 
         logger.debug("starting artifact processing")
 
@@ -267,7 +293,7 @@ class FileManager:
                 )
 
                 # delete any files with file-types not whitelisted; rename whitelisted files accordingly
-                if artifact.mime_type not in ARTIFACT_FILE_TYPE_WHITELIST:
+                if not self.is_whitelisted_artifact(artifact=artifact):
                     if not self.is_within_src_dir(artifact.absolute_path):
                         logger.error(
                             "refusing to delete artifact outside of source directory (%s): %s",
@@ -288,7 +314,8 @@ class FileManager:
                         )
                 else:
                     logger.debug(
-                        "file artifact is a whitelisted file type", artifact.mime_type
+                        "skipping delete operation; file artifact is a whitelisted file type: %s",
+                        artifact.mime_type,
                     )
 
                     if self.check_artifact(artifact=artifact):
